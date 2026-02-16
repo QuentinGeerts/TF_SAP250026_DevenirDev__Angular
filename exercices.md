@@ -77,3 +77,10 @@ Reprenez l'exercice précédent et ajouter la notion de service.
 La logique métier et les données doivent se situer dans la classe du service.
 
 Les composants doivent simplement injecter le service et le consommer.
+
+## Exercice 09 - Vérification d'âge
+
+Créer une application qui permet à l'utilisateur de rentrer sa date de naissance via un formulaire.
+
+Vous devez créer un custom validator qui permet de vérifier si la personne est majeur ou non.
+Dans le cas où elle est mineure, elle ne pourra pas valider le formulaire.
