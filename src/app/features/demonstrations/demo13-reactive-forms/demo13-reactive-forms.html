@@ -1,0 +1,216 @@
+<h2>Démonstration 13 - Reactive Forms</h2>
+
+<h3>1. FormControl</h3>
+
+<div class="mb-3">
+  <label class="form-label" for="email1">Email:</label>
+  <input class="form-control" type="email" id="email1" [formControl]="email">
+</div>
+
+<pre class="alert" [ngClass]="{ 'alert-success': email.valid, 'alert-danger': email.invalid }">
+  Statut: {{ email.valid }}
+</pre>
+
+<pre class="alert alert-secondary">
+{{ email.value | json }}
+</pre>
+
+
+<h3>2. FormGroup</h3>
+
+<form [formGroup]="catFormGroup" class="row" (ngSubmit)="onSubmitCatForm()">
+  <div class="mb-3 col-4">
+    <label class="form-label" for="catName">🐈 Nom du chat:</label>
+    <input class="form-control" type="text" formControlName="catName" id="catName">
+  </div>
+
+  <div class="mb-3 col-4">
+    <label class="form-label" for="catNbPaws">Nombre de pattes:</label>
+    <input class="form-control" type="number" formControlName="catNbPaws" id="catNbPaws">
+  </div>
+
+  <div class="mb-3 col-4">
+    <label class="form-label" for="catOwnerEmail">Email du propriétaire:</label>
+    <input class="form-control" type="email" formControlName="catOwnerEmail" id="catOwnerEmail">
+  </div>
+
+  <div class="mb-3 col-3">
+    <label class="form-label" for="catMainColor">Couleur prédominante du chat:</label>
+    <input class="form-control" type="color" formControlName="catMainColor" id="catMainColor">
+  </div>
+
+  <div class="mb-3">
+    <button class="btn btn-dark">Envoyer</button>
+  </div>
+</form>
+
+<pre class="alert" [ngClass]="{ 'alert-success': catFormGroup.valid, 'alert-danger': catFormGroup.invalid }">
+  Statut: {{ catFormGroup.valid }}
+</pre>
+
+<pre class="alert alert-secondary">
+{{ catFormGroup.value | json }}
+</pre>
+
+<h3>3. FormBuilder</h3>
+
+<form [formGroup]="userForm1">
+
+  <div class="mb-3">
+    <label for="lastname" class="form-label">Nom de famille:</label>
+    <input type="text" formControlName="lastname" id="lastname" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label for="firstname" class="form-label">Prénom:</label>
+    <input type="text" formControlName="firstname" id="firstname" class="form-control">
+  </div>
+
+  <div formGroupName="address">
+    <div class="row">
+      <div class="mb-3 col">
+        <label for="street" class="form-label">Rue:</label>
+        <input type="text" formControlName="street" id="street" class="form-control">
+      </div>
+      <div class="mb-3 col">
+        <label for="number" class="form-label">Numéro:</label>
+        <input type="text" formControlName="number" id="number" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3 col">
+        <label for="zip" class="form-label">Code postal:</label>
+        <input type="text" formControlName="zip" id="zip" class="form-control">
+      </div>
+      <div class="mb-3 col">
+        <label for="city" class="form-label">Ville</label>
+        <input type="text" formControlName="city" id="city" class="form-control">
+      </div>
+    </div>
+
+  </div>
+
+</form>
+
+
+<pre class="alert" [ngClass]="{ 'alert-success': userForm1.valid, 'alert-danger': userForm1.invalid }">
+  Statut: {{ userForm1.valid }}
+</pre>
+
+<pre class="alert alert-secondary">
+userForm1.value :
+{{ userForm1.value | json }}
+</pre>
+
+<pre class="alert alert-secondary">
+userForm1.get("lastname")?.value:
+{{ userForm1.get("lastname")?.value | json }}
+</pre>
+
+<pre class="alert alert-secondary">
+userForm1.get("address")?.value:
+{{ userForm1.get("address")?.value | json }}
+</pre>
+
+<pre class="alert alert-secondary">
+userForm1.get("address.street")?.value:
+{{ userForm1.get("address.street")?.value | json }}
+</pre>
+
+
+<h3>4. FormArray + gestion des erreurs + validators custom</h3>
+
+
+<form [formGroup]="profileForm">
+
+  <div class="mb-3">
+    <label for="email" class="form-label">Email:</label>
+    <input class="form-control" [class]="{'is-invalid': profileForm.get('email')?.invalid }" type="email"
+      formControlName="email" id="email">
+
+    @if (profileForm.get("email")?.touched && profileForm.get("email")?.hasError("required")) {
+    <small class="invalid-feedback">Le champ 'email' est requis.</small>
+    }
+
+    @if (profileForm.get("email")?.touched && profileForm.get("email")?.hasError("email")) {
+    <small class="invalid-feedback">Le format est incorrect.</small>
+    }
+  </div>
+
+  <div class="mb-3">
+    <label for="lastname" class="form-label">Nom de famille:</label>
+    <input class="form-control" type="text" formControlName="lastname" id="lastname">
+  </div>
+
+  <div class="mb-3">
+    <label for="firstname" class="form-label">Prénom:</label>
+    <input class="form-control" type="text" formControlName="firstname" id="firstname">
+  </div>
+
+  <div class="mb-3 has-validation" formGroupName="passwords">
+    <div class="mb-3">
+      <label for="password" class="form-label">Mot de passe:</label>
+      <input type="password" formControlName="password" id="password" class="form-control" [class]="{'is-invalid': profileForm.get('passwords.password')?.invalid }">
+
+      @if (profileForm.get("passwords.password")?.touched && profileForm.get("passwords.password")?.hasError("minlength")) {
+        <div class="invalid-feedback">Le mot de passe doit faire 8 caractères minimum.</div>
+        }
+    </div>
+    <div class="mb-3">
+      <label for="confirmPassword" class="form-label">Confirmer le mot de passe:</label>
+      <input type="password" formControlName="confirmPassword" id="confirmPassword" class="form-control" [class]="{'is-invalid': profileForm.get('passwords.password')?.invalid }">
+    </div>
+
+    @if (profileForm.get("passwords")?.touched && profileForm.get("passwords")?.hasError("passwordMismatch")) {
+    <div class="">
+      {{ profileForm.get("passwords")?.getError("passwordMismatch") }}
+    </div>
+    }
+
+  </div>
+
+  <div class="mb-3">
+    <button (click)="addLanguageField()" class="btn btn-dark">Ajouter une langue</button>
+  </div>
+
+  <div class="mb-3 row" formArrayName="spokenLanguages">
+
+    @for (languageControl of spokenLanguages.controls; track spokenLanguages) {
+
+    <div class="col-4 mb-1">
+      <div class="input-group">
+        <input class="form-control" type="text" [formControlName]="$index">
+        @if (spokenLanguages.controls.length > 1) {
+        <button class="btn btn-outline-secondary" (click)="removeLanguageField($index)">🗑️</button>
+        }
+      </div>
+    </div>
+
+    }
+  </div>
+
+  <div class="mb-3">
+    <button class="btn btn-outline-secondary" [disabled]="profileForm.invalid">Enregistrer</button>
+    <button class="btn btn-outline-secondary" (click)="onFill()">Pré-remplir tout</button>
+    <button class="btn btn-outline-secondary" (click)="onPartialFill()">Pré-remplir partiellement</button>
+    <button class="btn btn-outline-secondary" (click)="onReset()">Reset</button>
+    <button class="btn btn-outline-secondary" (click)="onResetDefault()">Reset</button>
+  </div>
+
+</form>
+
+
+<pre class="alert" [ngClass]="{ 'alert-success': profileForm.valid, 'alert-danger': profileForm.invalid }">
+  Statut: {{ profileForm.valid }}
+</pre>
+
+<pre class="alert alert-secondary">
+profileForm.value :
+{{ profileForm.value | json }}
+</pre>
+
+<pre class="alert alert-secondary">
+dirty: {{ profileForm.get("email")?.dirty }}
+pristine: {{ profileForm.get("email")?.pristine }}
+touched: {{ profileForm.get("email")?.touched }}
+untouched: {{ profileForm.get("email")?.untouched }}
+</pre>
