@@ -1,0 +1,13 @@
+<h3>Ajouter un produit :</h3>
+<div class="mb-3">
+  <label class="form-label" for="product-name">Nom du produit:</label>
+  <input class="form-control" type="text" name="product-name" id="product-name" [(ngModel)]="productName">
+</div>
+<div class="mb-3">
+  <label class="form-label" for="product-price">Prix du produit:</label>
+  <input class="form-control" type="text" name="product-price" id="product-price" [(ngModel)]="productPrice">
+</div>
+
+<div class="mb-3">
+  <button class="btn btn-dark" (click)="createProduct()">Créer le produit</button>
+</div>

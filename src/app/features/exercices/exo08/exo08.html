@@ -1,0 +1,15 @@
+<h2>Exercice 08 - Gestion des produits (services)</h2>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+       <app-exo08-list 
+        [productsToDisplay]="products" 
+        (deletedProduct)="removeToProducts($event)" />
+    </div>
+    <div class="col">
+       <app-exo08-add 
+        (createdProduct)="addToProducts($event)" />
+    </div>
+  </div>
+</div>
