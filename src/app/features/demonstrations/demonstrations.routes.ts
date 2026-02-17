@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { authGuard } from "../../core/guards/auth.guard";
 import { confirmGuard } from "../../core/guards/confirm.guard";
+import { userResolver } from "../../core/resolvers/user-resolver";
 
 export const routes: Routes = [
   // { path: '', component: Demonstrations },
@@ -92,5 +93,15 @@ export const routes: Routes = [
       .then(c => c.Demo15Secret),
     canActivate: [authGuard],
     canDeactivate: [confirmGuard]
-  }
+  },
+  {
+    path: 'demo16',
+    loadComponent: () => import("./demo16-resolvers/demo16-resolvers").then(c => c.Demo16Resolvers),
+  },  
+  {
+    path: 'demo16/:id',
+    loadComponent: () => import("./demo16-resolvers/demo16-resolvers").then(c => c.Demo16Resolvers),
+    resolve: { data: userResolver }
+  },
+
 ];

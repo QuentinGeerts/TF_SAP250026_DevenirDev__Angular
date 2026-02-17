@@ -1,0 +1,13 @@
+<h2>Démonstration 16 - Resolvers</h2>
+
+<button (click)="navigateTo(1)">User 1</button>
+<button (click)="navigateTo(2)">User 2</button>
+<button (click)="navigateTo(3)">User 3</button>
+
+
+@if (user) {
+<p>Id: {{user.id}}</p>
+<p>Id: {{user.email}}</p>
+<p>Id: {{user.lastname}}</p>
+<p>Id: {{user.firstname}}</p>
+}
