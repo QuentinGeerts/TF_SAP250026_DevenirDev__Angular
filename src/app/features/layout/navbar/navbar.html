@@ -1,4 +1,9 @@
 <nav>
+
+  <div>
+    État de connexion: {{ isConnected }}
+  </div>
+
   <ul>
     <li><a routerLink="">Home</a></li>
     <li><a routerLink="/home">Home (avec /home)</a></li>
@@ -20,6 +25,8 @@
         <li><a routerLink="/demonstrations/demo13">Démo 13 - Reactive Forms</a></li>
         <li><a routerLink="/demonstrations/demo14">Démo 14 - Routing avancé</a></li>
         <li><a routerLink="/demonstrations/demo15">Démo 15 - Guards</a></li>
+        <li><a routerLink="/demonstrations/demo16">Démo 16 - Resolvers</a></li>
+        <li><a routerLink="/demonstrations/demo17">Démo 17 - Observables</a></li>
       </ul>
     </li>
     <li>
@@ -36,8 +43,4 @@
       </ul>
     </li>
   </ul>
-
-  <div>
-    État de connexion: {{ isConnected }}
-  </div>
 </nav>

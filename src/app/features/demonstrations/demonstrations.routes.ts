@@ -103,5 +103,9 @@ export const routes: Routes = [
     loadComponent: () => import("./demo16-resolvers/demo16-resolvers").then(c => c.Demo16Resolvers),
     resolve: { data: userResolver }
   },
+  {
+    path: 'demo17',
+    loadComponent: () => import("./demo17-observables/demo17-observables").then(c => c.Demo17Observables)
+  },
 
 ];

@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { Authentication } from '../../../core/services/authentication';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,10 +9,15 @@ import { Authentication } from '../../../core/services/authentication';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {
+export class Navbar implements OnInit {
+  
+  private readonly _authService: AuthService = inject(AuthService);
 
-  private _authenticationService: Authentication = inject(Authentication);
-
-  isConnected: boolean = this._authenticationService.status();
-
+  isConnected!: boolean;
+  
+  ngOnInit(): void {
+    this._authService.authentication$.subscribe({
+      next: (value: boolean) => this.isConnected = value
+    })
+  }
 }
