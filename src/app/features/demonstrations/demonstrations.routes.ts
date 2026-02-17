@@ -1,4 +1,6 @@
 import { Routes } from "@angular/router";
+import { authGuard } from "../../core/guards/auth.guard";
+import { confirmGuard } from "../../core/guards/confirm.guard";
 
 export const routes: Routes = [
   // { path: '', component: Demonstrations },
@@ -77,6 +79,18 @@ export const routes: Routes = [
   {
     path: 'demo14/:id',
     loadComponent: () => import("./demo14-advanced-routing/demo14-advanced-routing")
-    .then(c => c.Demo14AdvancedRouting)
+      .then(c => c.Demo14AdvancedRouting)
+  },
+  {
+    path: 'demo15',
+    loadComponent: () => import("./demo15-guards/demo15-guards")
+      .then(c => c.Demo15Guards)
+  },
+  {
+    path: 'demo15-secret',
+    loadComponent: () => import("./demo15-guards/demo15-secret/demo15-secret")
+      .then(c => c.Demo15Secret),
+    canActivate: [authGuard],
+    canDeactivate: [confirmGuard]
   }
 ];
