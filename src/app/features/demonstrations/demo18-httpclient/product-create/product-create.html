@@ -1,0 +1,22 @@
+<h3>Création d'un produit</h3>
+
+<button class="btn btn-dark" routerLink="/demonstrations/demo18">Retour</button>
+
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Nom du produit:</label>
+    <input type="text" formControlName="name" id="name" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label for="price" class="form-label">Prix du produit:</label>
+    <input type="number" formControlName="price" id="price" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <button class="btn btn-outline-dark" [disabled]="productForm.invalid">Créer le produit</button>
+  </div>
+
+</form>
+

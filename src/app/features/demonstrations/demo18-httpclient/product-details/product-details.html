@@ -1,0 +1,11 @@
+<h2>Détails du produit</h2>
+
+<button class="btn btn-dark" routerLink="/demonstrations/demo18">Retour</button>
+
+@if (product()) {
+
+<h3>{{ product()?.name }}</h3>
+
+<p>Id: {{ product()?.id }}</p>
+<p>Prix: {{ product()?.price }}</p>
+}

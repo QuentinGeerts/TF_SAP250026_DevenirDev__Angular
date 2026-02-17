@@ -1,0 +1,33 @@
+<h3>Démonstration 18 - HttpClient</h3>
+
+<button class="btn btn-success" (click)="createProduct()">Ajouter un produit</button>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Détails</th>
+      <th>Id</th>
+      <th>Nom</th>
+      <th>Prix</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (product of products$ | async ; track product.id) {
+    <tr>
+      <td><button class="btn" (click)="details(product.id)">🔎</button></td>
+      <td>{{ product.id }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.price | currency }}</td>
+      <td>
+        <button class="btn btn-danger" (click)="deleteProduct(product.id)">🗑️</button>
+      </td>
+    </tr>
+    }
+    @empty {
+    <tr>
+      <td colspan="4">Aucun produit disponible.</td>
+    </tr>
+    }
+  </tbody>
+</table>

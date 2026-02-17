@@ -1,0 +1,80 @@
+{
+  "$schema": "../node_modules/json-server/schema.json",
+  "products": [
+    {
+      "id": "8",
+      "name": "Disque dur externe 1 To",
+      "price": 59.99
+    },
+    {
+      "id": "9",
+      "name": "Hub USB-C",
+      "price": 34.95
+    },
+    {
+      "id": "10",
+      "name": "Chargeur rapide",
+      "price": 29.99
+    },
+    {
+      "id": "11",
+      "name": "Câble HDMI 2m",
+      "price": 9.99
+    },
+    {
+      "id": "12",
+      "name": "Support laptop",
+      "price": 39.9
+    },
+    {
+      "id": "13",
+      "name": "Enceinte Bluetooth",
+      "price": 64.99
+    },
+    {
+      "id": "14",
+      "name": "Lampe de bureau LED",
+      "price": 44.5
+    },
+    {
+      "id": "15",
+      "name": "Batterie externe 20000 mAh",
+      "price": 35.99
+    },
+    {
+      "id": "16",
+      "name": "Carte SD 128 Go",
+      "price": 19.9
+    },
+    {
+      "id": "17",
+      "name": "Adaptateur Wi-Fi",
+      "price": 22.5
+    },
+    {
+      "id": "18",
+      "name": "Manette de jeu",
+      "price": 54.99
+    },
+    {
+      "id": "19",
+      "name": "Microphone USB",
+      "price": 79
+    },
+    {
+      "id": "20",
+      "name": "Multiprise parafoudre",
+      "price": 27.99
+    },
+    {
+      "id": "f093",
+      "name": "Clémentine",
+      "price": 3.26
+    },
+    {
+      "id": "cde1",
+      "name": "Souris sans-fil",
+      "price": 120.59
+    }
+  ]
+}

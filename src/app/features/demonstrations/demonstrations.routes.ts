@@ -97,7 +97,7 @@ export const routes: Routes = [
   {
     path: 'demo16',
     loadComponent: () => import("./demo16-resolvers/demo16-resolvers").then(c => c.Demo16Resolvers),
-  },  
+  },
   {
     path: 'demo16/:id',
     loadComponent: () => import("./demo16-resolvers/demo16-resolvers").then(c => c.Demo16Resolvers),
@@ -106,6 +106,25 @@ export const routes: Routes = [
   {
     path: 'demo17',
     loadComponent: () => import("./demo17-observables/demo17-observables").then(c => c.Demo17Observables)
+  },
+  {
+    path: 'demo18',
+    children: [
+      { 
+        path: '', 
+        loadComponent: () => import("./demo18-httpclient/demo18-httpclient").then(c => c.Demo18Httpclient),
+      },
+      {
+        path: ':id/details',
+        loadComponent: () => import("./demo18-httpclient/product-details/product-details")
+          .then(c => c.ProductDetails)
+      },
+      {
+        path: 'create',
+        loadComponent: () => import("./demo18-httpclient/product-create/product-create")
+          .then(c => c.ProductCreate)
+      },
+    ]
   },
 
 ];
