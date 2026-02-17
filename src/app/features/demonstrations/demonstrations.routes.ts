@@ -68,5 +68,15 @@ export const routes: Routes = [
     path: 'demo13',
     loadComponent: () => import("./demo13-reactive-forms/demo13-reactive-forms")
       .then(c => c.Demo13ReactiveForms)
+  },
+  {
+    path: 'demo14',
+    loadComponent: () => import("./demo14-advanced-routing/demo14-advanced-routing")
+      .then(c => c.Demo14AdvancedRouting)
+  },
+  {
+    path: 'demo14/:id',
+    loadComponent: () => import("./demo14-advanced-routing/demo14-advanced-routing")
+    .then(c => c.Demo14AdvancedRouting)
   }
 ];

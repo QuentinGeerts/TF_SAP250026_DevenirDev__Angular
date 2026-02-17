@@ -1,0 +1,22 @@
+<h2>Exercice 09 - Vérification d'âge</h2>
+
+
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+
+  <div class="mb-3">
+    <label class="form-label" for="birthdate">Date de naissance:</label>
+    <input class="form-control" type="date" name="birthdate" id="birthdate" formControlName="birthDate">
+    @if (form.get("birthDate")?.touched && form.get("birthDate")?.hasError("age")) {
+    <p>
+      {{ form.get("birthDate")?.getError("age") }}
+    </p>
+    }
+  </div>
+
+  <div class="mb-3">
+    <button class="btn btn-outline-secondary" [disabled]="form.invalid">
+      Entrer
+    </button>
+  </div>
+
+</form>

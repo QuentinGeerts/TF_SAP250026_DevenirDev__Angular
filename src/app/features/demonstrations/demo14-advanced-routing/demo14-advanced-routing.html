@@ -1,0 +1,16 @@
+<h2>Démonstration 14 - Routing avancé</h2>
+
+<button (click)="navigate()">Route vers /routage</button>
+<button (click)="navigateWithParams()">Route vers /42</button>
+<button (click)="navigateWithQueryParams()">Route avec données</button>
+
+@if(id) {
+<p>Id récupéré: {{ id }}</p>
+}
+
+@if (person) {
+<p>Nom: {{ person.lastname }}</p>
+<p>Nom: {{ person.firstname }}</p>
+<p>Nom: {{ person.extra?.job }}</p>
+<p>Nom: {{ person.extra?.age }}</p>
+}
