@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class FakeAuthService {
   
   private _isConnected: boolean = false;
   authentication$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this._isConnected);

@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class Authentication {
+export class FakeAuthenticationService {
 
   private isConnected = signal(true);
 

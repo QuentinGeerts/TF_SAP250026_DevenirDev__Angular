@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Authentication } from '../../../core/services/authentication';
+import { FakeAuthenticationService } from '../../../core/services/fake-authentication.service';
 
 @Component({
   selector: 'app-demo12-services-di',
@@ -9,7 +9,7 @@ import { Authentication } from '../../../core/services/authentication';
 })
 export class Demo12ServicesDi {
 
-  private _authenticationService: Authentication = inject(Authentication);
+  private _authenticationService: FakeAuthenticationService = inject(FakeAuthenticationService);
 
   isConnected: boolean = this._authenticationService.status();
 

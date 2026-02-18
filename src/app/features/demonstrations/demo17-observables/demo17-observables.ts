@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '../../../core/services/auth.service';
+import { FakeAuthService } from '../../../core/services/fake-auth.service';
 
 @Component({
   selector: 'app-demo17-observables',
@@ -9,7 +9,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class Demo17Observables implements OnInit {
   
-  private readonly _authService: AuthService = inject(AuthService);
+  private readonly _authService: FakeAuthService = inject(FakeAuthService);
   
   isConnected!: boolean;
   

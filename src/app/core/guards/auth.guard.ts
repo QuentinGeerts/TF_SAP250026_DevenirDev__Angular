@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { Authentication } from '../services/authentication';
+import { FakeAuthenticationService } from '../services/fake-authentication.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  return inject(Authentication).status()
+  return inject(FakeAuthenticationService).status()
     ? true
     : inject(Router).navigate(["demonstrations", "demo12"]);
 };

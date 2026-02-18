@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
-import { Authentication } from '../../../core/services/authentication';
-import { AuthService } from '../../../core/services/auth.service';
+import { FakeAuthenticationService } from '../../../core/services/fake-authentication.service';
+import { FakeAuthService } from '../../../core/services/fake-auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,7 +11,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class Navbar implements OnInit {
   
-  private readonly _authService: AuthService = inject(AuthService);
+  private readonly _authService: FakeAuthService = inject(FakeAuthService);
 
   isConnected!: boolean;
   
