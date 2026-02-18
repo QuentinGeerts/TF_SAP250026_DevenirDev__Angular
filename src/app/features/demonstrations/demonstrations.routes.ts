@@ -126,5 +126,14 @@ export const routes: Routes = [
       },
     ]
   },
+  {
+    path: 'demo19',
+    children: [
+      {
+        path: '',
+        loadComponent: () => import("./demo19-http-signal/demo19-http-signal").then(c => c.Demo19HttpSignal)
+      }
+    ]
+  }
 
 ];

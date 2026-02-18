@@ -1,0 +1,88 @@
+<h2>Démonstration 19 - Http avec Signal</h2>
+
+<!-- <pre>
+{{ products.value() | json}}
+</pre> -->
+
+<!-- <button class="btn btn-success" (click)="createProduct()">Ajouter un produit</button> -->
+
+@if (response.isLoading()) {
+<div class="d-flex justify-content-center">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Chargement...</span>
+  </div>
+</div>
+}
+@else if (response.error()) {
+<div class="d-flex justify-content-center">
+  <p>Une erreur est survenue pendant la récupération des valeurs.</p>
+</div>
+}
+@else if (response.hasValue()){
+<table class="table table-striped">
+
+  <thead>
+    <tr>
+      <th>Détails</th>
+      <th>Id</th>
+      <th>Nom</th>
+      <th>Prix</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (product of products(); track product.id) {
+    <tr>
+      <td>
+        <button class="btn" (click)="detailsProduct(product.id)">🔍</button>
+      </td>
+      <td>{{ product.id }}</td>
+      <td>{{ product.name }}</td>
+      <td class="">{{ product.price | currency:'EUR':'symbol' }}</td>
+      <td>
+        <button class="btn btn-outline-info me-2" (click)="updateProduct(product.id)">🖋️</button>
+        <button class="btn btn-outline-danger" (click)="deleteProduct(product.id)">🗑️</button>
+      </td>
+    </tr>
+    }
+    @empty {
+    <tr>
+      <td colspan="4">Aucun produit disponible.</td>
+    </tr>
+    }
+
+  </tbody>
+
+</table>
+}
+
+<!-- Gestion de la pagination -->
+
+<nav>
+  <ul class="pagination">
+
+    <li class="page-item">
+      <button [class]="{'disabled': !hasPrevious()}" class="page-link" (click)="loadData(response.value()?.prev!)">
+        Précédent
+      </button>
+    </li>
+
+    @for (_ of [].constructor(response.value()?.pages); track $index) {
+    <li class="page-item" [class]="{ 'active': page() === $index + 1}">
+      <button class="page-link" (click)="loadData($index + 1)">{{ $index + 1 }}</button>
+    </li>
+    }
+
+    <li class="page-item">
+      <button [class]="{'disabled': !hasNext()}" class="page-link" (click)="loadData(response.value()?.next!)">
+        Suivant
+      </button>
+    </li>
+
+  </ul>
+</nav>
+
+<pre>
+{{ response.value() | json }}
+</pre>
