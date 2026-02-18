@@ -1,0 +1,153 @@
+<h2>Démonstration 20 - Le Storage</h2>
+
+<h3 class="my-3">Comparaison entre LocalStorage et SessionStorage:</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Caractéristique</th>
+      <th>LocalStorage</th>
+      <th>SessionStorage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Durée de vie</td>
+      <td>Persiste jusqu'à suppression manuelle</td>
+      <td>Effacé à la fermeture de l'onglet</td>
+    </tr>
+    <tr>
+      <td>Capacité</td>
+      <td>~5-10 MB</td>
+      <td>~5-10 MB</td>
+    </tr>
+    <tr>
+      <td>Partage entre onglets</td>
+      <td>Oui</td>
+      <td>Non</td>
+    </tr>
+    <tr>
+      <td>Synchronisation</td>
+      <td>Tous les onglets du domaine</td>
+      <td>Un seul onglet</td>
+    </tr>
+    <tr>
+      <td>Type de données</td>
+      <td>Chaînes uniquement (JSON possible)</td>
+      <td>Chaînes uniquement (JSON possible)</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h3 class="my-3">Méthodes:</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Méthode</th>
+      <th>Description</th>
+      <th>Exemple</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>setItem(key, value)</td>
+      <td>Ajoute ou modifie une paire clé-valeur</td>
+      <td>
+        <samp><code>localStorage.setItem('nom', 'Jean')</code></samp>
+      </td>
+    </tr>
+    <tr>
+      <td>getItem(key)</td>
+      <td>Récupère la valeur associée à une clé</td>
+      <td>
+        <samp><code>localStorage.getItem('nom')</code></samp>
+      </td>
+    </tr>
+    <tr>
+      <td>removeItem(key)</td>
+      <td>Supprime une paire clé-valeur</td>
+      <td>
+        <samp><code>localStorage.removeItem('nom')</code></samp>
+      </td>
+    </tr>
+    <tr>
+      <td>clear()</td>
+      <td>Vide complètement le stockage</td>
+      <td>
+        <samp><code>localStorage.clear()</code></samp>
+      </td>
+    </tr>
+    <tr>
+      <td>key(index)</td>
+      <td>Récupère la clé à un index donné</td>
+      <td>
+        <samp><code>localStorage.key(0)</code></samp>
+      </td>
+    </tr>
+    <tr>
+      <td>length</td>
+      <td>Nombre de paires clé-valeur stockées</td>
+      <td>
+        <samp><code>localStorage.length</code></samp>
+      </td>
+    </tr>
+    <tr>
+      <td>Sérialisation d'objet</td>
+      <td>Stocker et récupérer des objets en JSON</td>
+      <td>
+        <samp>
+          <code>localStorage.setItem('user', JSON.stringify({{ '{' }} id: 1, nom: 'Jean' {{ '}' }}))</code>
+          <code>JSON.parse(localStorage.getItem('user'))</code>
+        </samp>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- LocalStorage : préférences utilisateur -->
+
+<h3 class="my-3">LocalStorage — Préférences utilisateur</h3>
+<p class="text-muted">Les préférences sont sauvegardées dans le localStorage : elles persistent même après fermeture du navigateur.</p>
+
+<form [formGroup]="preferencesForm" (ngSubmit)="apply()">
+  <div class="row">
+    <div class="col mb-3">
+      <label for="theme" class="form-label">Thème :</label>
+      <select formControlName="theme" id="theme" class="form-control">
+        <option value="dark">Sombre</option>
+        <option value="light">Clair</option>
+      </select>
+    </div>
+    <div class="col mb-3">
+      <label for="language" class="form-label">Langue :</label>
+      <select formControlName="language" id="language" class="form-control">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+        <option value="nl">Nederlands</option>
+      </select>
+    </div>
+  </div>
+  <div class="mb-3 d-flex gap-2">
+    <button type="submit" class="btn btn-primary">Appliquer</button>
+    <button type="button" class="btn btn-outline-danger" (click)="removePreferences()">Supprimer les préférences</button>
+  </div>
+</form>
+
+<div class="mb-3">
+  Préférences en localStorage : <strong>{{ preferences() | json }}</strong>
+</div>
+
+<!-- SessionStorage : compteur de visites -->
+
+<h3 class="my-3">SessionStorage — Compteur de visites</h3>
+<p class="text-muted">
+  Ce compteur utilise le sessionStorage : il s'incrémente à chaque visite de cette page <strong>dans l'onglet courant</strong>,
+  et repart à zéro si tu fermes l'onglet ou ouvres un nouvel onglet.
+</p>
+
+<div class="mb-3 d-flex align-items-center gap-3">
+  <span>Nombre de visites dans cet onglet : <strong>{{ sessionVisitCount() }}</strong></span>
+  <button type="button" class="btn btn-outline-secondary" (click)="resetVisitCount()">Réinitialiser</button>
+</div>

@@ -110,8 +110,8 @@ export const routes: Routes = [
   {
     path: 'demo18',
     children: [
-      { 
-        path: '', 
+      {
+        path: '',
         loadComponent: () => import("./demo18-httpclient/demo18-httpclient").then(c => c.Demo18Httpclient),
       },
       {
@@ -134,6 +134,10 @@ export const routes: Routes = [
         loadComponent: () => import("./demo19-http-signal/demo19-http-signal").then(c => c.Demo19HttpSignal)
       }
     ]
+  },
+  {
+    path: 'demo20',
+    loadComponent: () => import("./demo20-storage/demo20-storage").then(c => c.Demo20Storage)
   }
 
 ];
