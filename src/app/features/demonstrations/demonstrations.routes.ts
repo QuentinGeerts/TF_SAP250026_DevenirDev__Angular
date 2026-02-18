@@ -138,6 +138,10 @@ export const routes: Routes = [
   {
     path: 'demo20',
     loadComponent: () => import("./demo20-storage/demo20-storage").then(c => c.Demo20Storage)
-  }
+  },
+  {
+    path: 'demo21',
+    loadComponent: () => import("./demo21-interceptor/demo21-interceptor").then(c => c.Demo21Interceptor)
+  },
 
 ];

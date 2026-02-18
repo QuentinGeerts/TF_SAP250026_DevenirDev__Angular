@@ -1,13 +1,13 @@
-<h2>Démonstration 06 - Les pipes (intégrés)</h2>
+<h3>Démonstration 06 - Les pipes (intégrés)</h3>
 
-<h3>Syntaxe: </h3>
+<h4>Syntaxe: </h4>
 <code ngNonBindable>
   {{ expression | nomPipe }}
 </code>
 
-<h3>Exemples</h3>
+<h4>Exemples</h4>
 
-<h4>Chaînes de caractères:</h4>
+<h5>Chaînes de caractères:</h5>
 
 <ul>
   <li>lowerCasePipe: {{ "couCou Les petitS LOUpS" | lowercase }}</li>
@@ -15,7 +15,7 @@
   <li>titleCasePipe: {{ "couCou Les petitS LOUpS" | titlecase }}</li>
 </ul>
 
-<h4>Nombres:</h4>
+<h5>Nombres:</h5>
 
 <ul>
   <li>currencyPipe: {{ 1234.56 }}</li>
@@ -32,7 +32,7 @@
 
 <p>Pareil pour DecimalPipe et PercentPipe. (plus simple: digitsInfo + locale)</p>
 
-<h4>Date:</h4>
+<h5>Date:</h5>
 
 <ul>
   <li>datePipe: {{ now }}</li>
@@ -43,7 +43,7 @@
   <li>datePipe: {{ now | date : 'EEEE dd MMMM yyyy HH:mm:ss' : '' : 'ja' }}</li>
 </ul>
 
-<h4>JSon:</h4>
+<h5>JSon:</h5>
 
 <ul>
   <li>jsonPipe: {{ personne | json }}</li>

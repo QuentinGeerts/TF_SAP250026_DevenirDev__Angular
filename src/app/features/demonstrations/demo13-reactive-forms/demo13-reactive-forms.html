@@ -1,6 +1,6 @@
-<h2>Démonstration 13 - Reactive Forms</h2>
+<h3>Démonstration 13 - Reactive Forms</h3>
 
-<h3>1. FormControl</h3>
+<h4>1. FormControl</h4>
 
 <div class="mb-3">
   <label class="form-label" for="email1">Email:</label>
@@ -16,7 +16,7 @@
 </pre>
 
 
-<h3>2. FormGroup</h3>
+<h4>2. FormGroup</h4>
 
 <form [formGroup]="catFormGroup" class="row" (ngSubmit)="onSubmitCatForm()">
   <div class="mb-3 col-4">
@@ -52,7 +52,7 @@
 {{ catFormGroup.value | json }}
 </pre>
 
-<h3>3. FormBuilder</h3>
+<h4>3. FormBuilder</h4>
 
 <form [formGroup]="userForm1">
 
@@ -117,7 +117,7 @@ userForm1.get("address.street")?.value:
 </pre>
 
 
-<h3>4. FormArray + gestion des erreurs + validators custom</h3>
+<h4>4. FormArray + gestion des erreurs + validators custom</h4>
 
 
 <form [formGroup]="profileForm">
