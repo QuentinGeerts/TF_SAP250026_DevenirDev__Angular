@@ -1,4 +1,4 @@
-# Formation Angular - Guide pas-à-pas (he oui !)
+# Formation Angular - Guide pas-à-pas
 
 > Documentation officielle : [https://angular.dev](https://angular.dev)
 
