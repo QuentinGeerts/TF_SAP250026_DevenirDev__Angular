@@ -22,7 +22,10 @@ export class Todolist {
 
   @ViewChild('toastEl') toastEl!: ElementRef;
   @ViewChild('modalEl') modalEl!: ElementRef;
+
   @ViewChild(TodolistAdd) todolistAddComp!: TodolistAdd;
+
+
   toastTodoName = signal('');
   toastMessage = signal('');
 
@@ -52,6 +55,7 @@ export class Todolist {
   }
 
   deleteTodo(todo: Todo) {
+    if (!confirm(`Voulez-vous supprimer '${todo.title}' ?`)) return;
     this.todoService.deleteTodo(todo.id).subscribe({
       next: () => {
         this.toastTodoName.set(`✅ ${todo.title}`)

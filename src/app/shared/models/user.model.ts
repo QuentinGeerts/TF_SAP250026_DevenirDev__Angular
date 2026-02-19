@@ -12,8 +12,8 @@ export interface UserLogin {
 export interface UserSignUp {
   email: string;
   password: string;
-  lastname: string;
-  firstname: string;
+  lastname?: string;
+  firstname?: string;
 }
 
 export interface UserWithId extends User {

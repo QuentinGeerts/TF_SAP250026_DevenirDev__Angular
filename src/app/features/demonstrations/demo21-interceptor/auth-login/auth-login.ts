@@ -32,7 +32,6 @@ export class AuthLogin {
       .subscribe({
         next: () => {
           this.errorResponse.set(false);
-          this.errorMessage.set("Inscription réussie");
         },
         error: (err) => {
           this.errorResponse.set(true);

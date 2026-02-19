@@ -20,6 +20,10 @@ export class StorageService {
     localStorage.removeItem(key);
   }
 
+  clearLocal(): void {
+    localStorage.clear();
+  }
+
   // -- SessionStorage
 
   setSession<T>(key: string, value: T): void {
@@ -37,12 +41,6 @@ export class StorageService {
 
   clearSession(): void {
     sessionStorage.clear();
-  }
-
-  // -- LocalStorage
-
-  clearLocal(): void {
-    localStorage.clear();
   }
 
 }
