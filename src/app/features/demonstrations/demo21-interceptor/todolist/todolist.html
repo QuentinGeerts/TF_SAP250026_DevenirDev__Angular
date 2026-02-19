@@ -16,7 +16,7 @@
           <option value="2">Terminé</option>
         </select>
         <label class="form-check-label w-75" [for]="todo.id">
-          <span class="fw-bold">{{ todo.title }}</span> <br>
+          <span class="fw-bold">{{ todo.title }}</span> - <span>{{ todo.createdAt | date: 'dd MMMM yyyy à HH:mm' : '+0200' }}</span> <br>
           <small>{{ todo.description }}</small>
         </label>
       </div>

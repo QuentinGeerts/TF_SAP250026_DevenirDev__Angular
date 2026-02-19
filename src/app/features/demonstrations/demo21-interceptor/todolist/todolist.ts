@@ -5,12 +5,13 @@ import { Todo } from '../../../../shared/models/todo.models';
 import { FormsModule } from '@angular/forms';
 import { Modal, Toast } from 'bootstrap';
 import { TodolistAdd } from "../todolist-add/todolist-add";
+import { DatePipe } from '@angular/common';
 
 const STATUS_LABELS = ['Pas commencé', 'En cours', 'Terminé'];
 
 @Component({
   selector: 'app-todolist',
-  imports: [FormsModule, TodolistAdd],
+  imports: [FormsModule, TodolistAdd, DatePipe],
   templateUrl: './todolist.html',
   styleUrl: './todolist.css',
 })

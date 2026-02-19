@@ -24,6 +24,7 @@ export class TodolistAdd {
     if (this.todoForm.invalid) return;
 
     this.todoSignal.emit(this.todoForm.value);
+    this.todoForm.reset();
   }
 
 }

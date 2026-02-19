@@ -5,12 +5,19 @@ import { User, UserLogin, UserSignUp } from '../../shared/models/user.model';
 import { environment } from '../../../environments/environment';
 import { JwtPayload, TokenInfo } from '../../shared/models/jwt.model';
 import { jwtDecode } from 'jwt-decode';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+
   private readonly http: HttpClient = inject(HttpClient);
+  private readonly storage: StorageService = inject(StorageService);
+
+  constructor() {
+    this.connectedUser.set(this.storage.getLocal<JwtPayload>("payload") ?? null);
+  }
   
   connectedUser = signal<JwtPayload | null>(null);
   
@@ -31,6 +38,10 @@ export class AuthService {
       role: claims.role,
       exp: claims.exp
     });
+
+    // Pour la démonstration, mais en production on évite 
+    // Car c'est visible et accessible via des scripts (faille XSS)
+    this.storage.setLocal("payload", this.connectedUser())
   }
   
   signup(signup: UserSignUp): Observable<void> {
@@ -39,5 +50,6 @@ export class AuthService {
 
   logout() {
     this.connectedUser.set(null);
+    this.storage.removeLocal("payload");
   }
 }
