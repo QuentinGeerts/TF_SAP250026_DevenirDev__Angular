@@ -1,4 +1,4 @@
-# Formation Angular - Guide pas-à-pas
+# Formation Angular - Guide pas-à-pas 🥸
 
 > Documentation officielle : [https://angular.dev](https://angular.dev)
 
@@ -2440,5 +2440,6 @@ ng build                       # Compiler pour la production
 - [Guide de l'injection de dépendances](https://angular.dev/guide/di)
 - [Guide des formulaires](https://angular.dev/guide/forms)
 - [Référence de la CLI Angular](https://angular.dev/tools/cli)
+
 
 
