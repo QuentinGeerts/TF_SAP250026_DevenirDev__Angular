@@ -141,7 +141,16 @@ export const routes: Routes = [
   },
   {
     path: 'demo21',
-    loadComponent: () => import("./demo21-interceptor/demo21-interceptor").then(c => c.Demo21Interceptor)
+    children: [
+      {
+        path: '',
+        loadComponent: () => import("./demo21-interceptor/demo21-interceptor").then(c => c.Demo21Interceptor),
+      },
+      {
+        path: '',
+        loadComponent: () => import("./demo21-interceptor/demo21-interceptor").then(c => c.Demo21Interceptor),
+      }
+    ]
   },
 
 ];

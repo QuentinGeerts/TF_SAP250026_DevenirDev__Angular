@@ -1,0 +1,13 @@
+<form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+
+  <div class="mb-3">
+    <label for="title" class="form-label">Nom de la tâche:</label>
+    <input type="text" class="form-control" formControlName="title" id="title">
+  </div>
+
+  <div class="mb-3">
+    <label for="description" class="form-label">Nom de la tâche:</label>
+    <textarea class="form-control" formControlName="description" id="description" rows="3"></textarea>
+  </div>
+
+</form>

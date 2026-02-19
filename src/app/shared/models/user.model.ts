@@ -4,9 +4,16 @@ export interface User {
   firstname: string;
 }
 
-export interface Login {
+export interface UserLogin {
   email: string;
   password: string;
+}
+
+export interface UserSignUp {
+  email: string;
+  password: string;
+  lastname: string;
+  firstname: string;
 }
 
 export interface UserWithId extends User {

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { User, Login } from '../../../shared/models/user.model';
+import { User, UserLogin } from '../../../shared/models/user.model';
 
 @Component({
   selector: 'app-demo01-interpolation',

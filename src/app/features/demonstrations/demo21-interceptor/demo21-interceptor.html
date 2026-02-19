@@ -1,3 +1,40 @@
 <h3>Démonstration 21 - Interceptor</h3>
 
+<div class="my-3">
+  @if (!isConnected()) {
+  <button class="btn btn-dark me-2" (click)="userChoice = 'login'">Connexion</button>
+  <button class="btn btn-dark me-2" (click)="userChoice = 'signup'">Inscription</button>
+  }
+  @else {
+  <button class="btn btn-dark me-2" (click)="logout()">Déconnexion</button>
+  }
+</div>
 
+<div class="vh-100 ">
+
+  @if (!isConnected()) {
+  <div class="row">
+    <div class="col-6">
+
+      @switch(userChoice) {
+      @case ('login') {
+      <app-auth-login />
+      }
+      @case ('signup') {
+      <app-auth-signup />
+      }
+      }
+
+    </div>
+    <div class="col-6">
+      <div class="text-center">
+        <img src="img/todolist.png" class="w-75 rounded mx-auto d-block" alt="todolist">
+      </div>
+    </div>
+  </div>
+  }
+  @else {
+  <app-todolist />
+  }
+
+</div>

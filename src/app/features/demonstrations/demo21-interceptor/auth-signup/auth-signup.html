@@ -1,0 +1,61 @@
+<h4>Inscription</h4>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+        @if (errorResponse() !== null) {
+          <div class="alert" [class]="{'alert-success': !errorResponse(), 'alert-danger': errorResponse()}" role="alert">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email:</label>
+          <input type="email" formControlName="email" id="email" class="form-control">
+        </div>
+
+        <div class="row mb-3" formGroupName="passwords">
+          <div class="col mb-3">
+            <label for="password" class="form-label">Mot de passe:</label>
+            <input [type]="displayPassword() ? 'text' : 'password'" formControlName="password" id="password"
+              class="form-control">
+          </div>
+
+          <div class="col mb-3">
+            <label for="confirm-password" class="form-label">Mot de passe:</label>
+            <input [type]="displayPassword() ? 'text' : 'password'" formControlName="confirmPassword"
+              id="confirm-password" class="form-control">
+          </div>
+
+          <div class="col-12">
+            <div class="mb-3 form-check">
+              <input class="form-check-input" type="checkbox" id="display-password" (change)="onChange()"
+                [checked]="displayPassword()">
+              <label class="form-check-label" for="display-password">
+                Afficher le mot de passe
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col">
+            <label for="lastname" class="form-label">Nom de famille:</label>
+            <input type="text" formControlName="lastname" id="lastname" class="form-control">
+          </div>
+          <div class="col">
+            <label for="firstname" class="form-label">Prénom:</label>
+            <input type="text" formControlName="firstname" id="firstname" class="form-control">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <button class="btn btn-dark" [disabled]="signupForm.invalid">S'inscrire</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

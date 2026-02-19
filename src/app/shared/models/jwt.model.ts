@@ -1,17 +1,12 @@
 export interface JwtPayload {
-  sub: string;
+  sub?: string;
   email?: string;
-  roles?: string[];
-  iat?: number;
+  role?: string;
   exp?: number;
-  [key: string]: unknown;
+  token: string
 }
 
 export interface TokenInfo {
-  raw: string;
-  header: Record<string, unknown>;
-  payload: JwtPayload;
-  isExpired: boolean;
-  expiresAt: Date | null;
-  remainingMs: number | null;
+  token: string;
+  expiration: Date | null;
 }
