@@ -1,4 +1,4 @@
-# Formation Angular - Guide pas-à-pas 🥸
+# Formation Angular - Guide pas-à-pas
 
 > Documentation officielle : [https://angular.dev](https://angular.dev)
 
@@ -49,7 +49,18 @@ Puis fermez et rouvrez votre terminal.
 21. [Démo 11 - Communication entre composants](#21---démo-11---communication-entre-composants)
 22. [Exercice 07 - Gestion des produits](#22---exercice-07---gestion-des-produits)
 23. [Démo 12 - Les services et l'injection de dépendances](#23---démo-12---les-services-et-linjection-de-dépendances)
-24. [Récapitulatif des notions](#24---récapitulatif-des-notions)
+25. [Démo 13 - Les Formulaires Réactifs](#25---démo-13---les-formulaires-réactifs)
+26. [Démo 14 - Routing avancé](#26---démo-14---routing-avancé)
+27. [Démo 15 - Les Guards](#27---démo-15---les-guards)
+28. [Démo 16 - Les Resolvers](#28---démo-16---les-resolvers)
+29. [Démo 17 - Les Observables (RxJS)](#29---démo-17---les-observables-rxjs)
+30. [Exercice 08 - Gestion des produits avec service](#30---exercice-08---gestion-des-produits-avec-service)
+31. [Démo 18 - HttpClient](#31---démo-18---httpclient)
+32. [Démo 19 - HTTP avec Signaux (httpResource)](#32---démo-19---http-avec-signaux-httpresource)
+33. [Démo 20 - Storage (localStorage / sessionStorage)](#33---démo-20---storage-localstorage--sessionstorage)
+34. [Démo 21 - Intercepteur HTTP et Authentification JWT](#34---démo-21---intercepteur-http-et-authentification-jwt)
+35. [Exercice 09 - Formulaire réactif avec validateur d'âge](#35---exercice-09---formulaire-réactif-avec-validateur-dâge)
+36. [Récapitulatif des notions](#36---récapitulatif-des-notions)
 
 ---
 
@@ -129,19 +140,39 @@ src/
     ├── app.config.ts           ← Configuration de l'application
     ├── app.routes.ts           ← Configuration du routing
     ├── core/
+    │   ├── guards/
+    │   │   ├── auth.guard.ts               ← Guard canActivate (vérifie si connecté)
+    │   │   └── confirm.guard.ts            ← Guard canDeactivate (confirmation avant départ)
+    │   ├── interceptors/
+    │   │   └── token-interceptor.ts        ← Intercepteur qui injecte le token JWT
+    │   ├── resolvers/
+    │   │   └── user-resolver.ts            ← Résolveur pour précharger un utilisateur
     │   └── services/
-    │       └── authentication.ts       ← Service d'authentification (DI)
+    │       ├── authentication.ts           ← Service d'auth par signaux (demo12)
+    │       ├── auth.service.ts             ← Service auth JWT + HttpClient
+    │       ├── fake-auth.service.ts        ← Service auth factice (BehaviorSubject)
+    │       ├── fake-authentication.service.ts ← Service auth factice (signals)
+    │       ├── product-httpclient.service.ts  ← Service produits (HttpClient)
+    │       ├── product-httpresource.service.ts ← Service produits (httpResource)
+    │       ├── products.service.ts         ← Service produits en mémoire
+    │       ├── storage.service.ts          ← Service localStorage/sessionStorage
+    │       └── todolist.service.ts         ← Service todos
     ├── shared/
     │   ├── models/
-    │   │   ├── user.model.ts           ← Interface User partagée
-    │   │   └── product.model.ts        ← Interface Product partagée
+    │   │   ├── user.model.ts               ← Interfaces User, UserWithId, UserLogin, UserSignUp
+    │   │   ├── product.model.ts            ← Interfaces Product, ProductDTO, PaginationParams
+    │   │   ├── jwt.model.ts                ← Interfaces JwtPayload, TokenInfo
+    │   │   └── todo.models.ts              ← Interface Todo
     │   ├── directives/
-    │   │   └── highlight.ts            ← Directive personnalisée de surlignage
-    │   └── pipes/
-    │       ├── chrono-pipe.ts          ← Pipe pour formater le chrono
-    │       ├── convert-to-dhms-pipe.ts ← Pipe pour convertir en jours/heures/min/sec
-    │       ├── sum-pipe.ts             ← Pipe pour sommer un tableau
-    │       └── temperature-pipe.ts     ← Pipe pour convertir les températures
+    │   │   └── highlight.ts                ← Directive personnalisée de surlignage
+    │   ├── pipes/
+    │   │   ├── chrono-pipe.ts              ← Pipe pour formater le chrono
+    │   │   ├── convert-to-dhms-pipe.ts     ← Pipe pour convertir en jours/heures/min/sec
+    │   │   ├── sum-pipe.ts                 ← Pipe pour sommer un tableau
+    │   │   └── temperature-pipe.ts         ← Pipe pour convertir les températures
+    │   └── validators/
+    │       ├── age.validator.ts            ← Validateur d'âge minimum
+    │       └── password-match.validator.ts ← Validateur confirmation mot de passe
     └── features/
         ├── home/
         │   └── home.ts
@@ -166,7 +197,23 @@ src/
         │   ├── demo10-custom-directives/
         │   ├── demo11-communication-composants/
         │   │   └── enfant/             ← Composant enfant (Input/Output)
-        │   └── demo12-services-di/
+        │   ├── demo12-services-di/
+        │   ├── demo13-reactive-forms/
+        │   ├── demo14-advanced-routing/
+        │   ├── demo15-guards/
+        │   │   └── demo15-secret/      ← Page protégée par le guard
+        │   ├── demo16-resolvers/
+        │   ├── demo17-observables/
+        │   ├── demo18-httpclient/
+        │   │   ├── product-details/    ← Détail d'un produit
+        │   │   └── product-create/     ← Formulaire de création
+        │   ├── demo19-http-signal/
+        │   ├── demo20-storage/
+        │   └── demo21-interceptor/
+        │       ├── auth-login/         ← Formulaire de connexion
+        │       ├── auth-signup/        ← Formulaire d'inscription
+        │       ├── todolist/           ← Liste des todos
+        │       └── todolist-add/       ← Formulaire d'ajout de todo
         └── exercices/
             ├── exercices.ts
             ├── exercices.routes.ts
@@ -175,9 +222,13 @@ src/
             ├── exo03/
             ├── exo05/
             ├── exo06/
-            └── exo07/
-                ├── add-product/        ← Composant enfant (formulaire)
-                └── list-products/      ← Composant enfant (liste)
+            ├── exo07/
+            │   ├── add-product/        ← Composant enfant (formulaire)
+            │   └── list-products/      ← Composant enfant (liste)
+            ├── exo08/
+            │   ├── exo08-add/          ← Formulaire d'ajout de produit
+            │   └── exo08-list/         ← Liste des produits
+            └── exo09/                  ← Validateur d'âge
 ```
 
 ### Fichiers clés générés automatiquement
@@ -2315,7 +2366,1417 @@ export class Navbar {
 
 ---
 
-## 24 - Récapitulatif des notions
+## 25 - Démo 13 - Les Formulaires Réactifs
+
+Les **formulaires réactifs** (_Reactive Forms_) offrent une approche programmatique pour créer et gérer des formulaires. Contrairement à l'approche template (`ngModel`), toute la logique réside dans la classe TypeScript.
+
+> Docs : [https://angular.dev/guide/forms/reactive-forms](https://angular.dev/guide/forms/reactive-forms)
+
+### Générer le composant
+
+```bash
+ng g c features/demonstrations/demo13-reactive-forms --skip-tests
+```
+
+### Les 4 briques fondamentales
+
+| Classe | Description |
+|--------|-------------|
+| `FormControl` | Représente un seul champ de formulaire |
+| `FormGroup` | Groupe de `FormControl` (un objet) |
+| `FormArray` | Liste dynamique de contrôles |
+| `FormBuilder` | Service raccourci pour créer des formulaires |
+
+### 1. FormControl — champ unique
+
+```typescript
+import { FormControl, Validators } from '@angular/forms';
+
+// Valeur initiale + liste de validateurs
+email = new FormControl<string>('', [Validators.email, Validators.required]);
+```
+
+```html
+<!-- [formControl] lie directement un FormControl à un input -->
+<input [formControl]="email">
+
+@if (email.invalid && email.touched) {
+  <span class="text-danger">Email invalide</span>
+}
+```
+
+### 2. FormGroup — groupe de champs
+
+```typescript
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+catFormGroup: FormGroup = new FormGroup({
+  catName:      new FormControl(null, [Validators.required]),
+  catNbPaws:    new FormControl(4),
+  catMainColor: new FormControl(null, [Validators.required])
+});
+
+onSubmitCatForm() {
+  if (this.catFormGroup.invalid) return;  // Ne pas soumettre si invalide
+  console.log(this.catFormGroup.value);   // { catName: '...', ... }
+}
+```
+
+```html
+<!-- [formGroup] lie le FormGroup au <form> -->
+<form [formGroup]="catFormGroup" (ngSubmit)="onSubmitCatForm()">
+
+  <!-- formControlName lie l'input à un contrôle du groupe par son nom -->
+  <input formControlName="catName">
+
+  @if (catFormGroup.get('catName')?.invalid && catFormGroup.get('catName')?.touched) {
+    <div class="text-danger">Le nom est requis</div>
+  }
+
+  <input formControlName="catNbPaws" type="number">
+  <button type="submit">Soumettre</button>
+</form>
+```
+
+### 3. FormBuilder — syntaxe raccourcie
+
+`FormBuilder` est un service qui simplifie la création de formulaires :
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
+private readonly _fb: FormBuilder = inject(FormBuilder);
+
+// Équivalent à : new FormGroup({ nom: new FormControl(null, []) })
+userForm: FormGroup = this._fb.group({
+  lastname:  [null, []],
+  firstname: [null, []],
+
+  // FormGroup imbriqué (adresse)
+  address: this._fb.group({
+    street: [null, []],
+    city:   [null, []]
+  })
+});
+```
+
+```html
+<form [formGroup]="userForm">
+  <input formControlName="lastname">
+
+  <!-- formGroupName pour les groupes imbriqués -->
+  <div formGroupName="address">
+    <input formControlName="street">
+    <input formControlName="city">
+  </div>
+</form>
+```
+
+### 4. FormArray — champs dynamiques
+
+```typescript
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
+
+profileForm: FormGroup = this._fb.group({
+  spokenLanguages: this._fb.array([
+    this._fb.control(null)  // Un champ initial
+  ])
+});
+
+// Getter pour accéder au FormArray facilement
+get spokenLanguages(): FormArray {
+  return this.profileForm.get("spokenLanguages") as FormArray;
+}
+
+addLanguageField() {
+  this.spokenLanguages.push(this._fb.control(null, [Validators.required]));
+}
+
+removeLanguageField(index: number) {
+  if (this.spokenLanguages.length === 1) return;
+  this.spokenLanguages.removeAt(index);
+}
+```
+
+```html
+<div formArrayName="spokenLanguages">
+  @for (ctrl of spokenLanguages.controls; track $index) {
+    <div>
+      <input [formControlName]="$index">
+      <button type="button" (click)="removeLanguageField($index)">Retirer</button>
+    </div>
+  }
+</div>
+<button type="button" (click)="addLanguageField()">Ajouter une langue</button>
+```
+
+### Validators intégrés
+
+| Validator | Description |
+|-----------|-------------|
+| `Validators.required` | Champ obligatoire |
+| `Validators.email` | Format email valide |
+| `Validators.minLength(n)` | Longueur minimale |
+| `Validators.maxLength(n)` | Longueur maximale |
+| `Validators.min(n)` | Valeur numérique minimale |
+| `Validators.max(n)` | Valeur numérique maximale |
+| `Validators.pattern(regex)` | Correspondance avec une expression régulière |
+
+### Méthodes de formulaire
+
+| Méthode | Description |
+|---------|-------------|
+| `form.value` | Objet avec les valeurs actuelles |
+| `form.valid` / `form.invalid` | État de validation global |
+| `form.reset()` | Remet tout à `null` |
+| `form.reset({ champ: 'val' })` | Remet avec valeurs par défaut |
+| `form.patchValue({...})` | Remplit partiellement (champs inconnus ignorés) |
+| `form.setValue({...})` | Remplit entièrement (tous les champs requis) |
+| `control.errors` | Objet des erreurs actives (`null` si valide) |
+| `control.touched` | L'utilisateur a quitté le champ au moins une fois |
+| `control.dirty` | La valeur a été modifiée au moins une fois |
+
+### Validator personnalisé — cross-field (vérification entre champs)
+
+Un validator posé sur un `FormGroup` peut comparer plusieurs champs entre eux :
+
+```typescript
+// shared/validators/password-match.validator.ts
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+
+export function passwordMatchValidator(
+  passwordFieldName: string = "password",
+  confirmPasswordFieldName: string = "confirmPassword"
+): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const password = control.get(passwordFieldName);
+    const confirm  = control.get(confirmPasswordFieldName);
+
+    if (password?.value !== confirm?.value) {
+      return { passwordMismatch: 'Les mots de passe ne correspondent pas.' };
+    }
+    return null;  // null = valide
+  };
+}
+```
+
+Utilisation dans un `FormGroup` avec `FormBuilder` :
+
+```typescript
+profileForm: FormGroup = this._fb.group({
+  passwords: this._fb.group({
+    password:        [null, [Validators.required, Validators.minLength(8)]],
+    confirmPassword: [null, []]
+  }, {
+    validators: [passwordMatchValidator()]  // Validator posé sur le groupe
+  })
+});
+```
+
+```html
+@if (profileForm.get('passwords')?.errors?.['passwordMismatch']) {
+  <span class="text-danger">Les mots de passe ne correspondent pas.</span>
+}
+```
+
+### Notions couvertes
+
+| Notion | Description |
+|--------|-------------|
+| `FormControl` | Champ individuel avec valeur et validateurs |
+| `FormGroup` | Groupe de contrôles (y compris imbriqués) |
+| `FormBuilder` | Service de création de formulaires avec `[]` |
+| `FormArray` | Tableau de contrôles dynamique |
+| `[formGroup]` | Lie un FormGroup à un `<form>` |
+| `formControlName` | Lie un champ HTML à un FormControl par nom |
+| `formGroupName` | Lie un sous-groupe dans le template |
+| `formArrayName` | Lie un FormArray dans le template |
+| `Validators` | Collection de validateurs intégrés |
+| `ValidatorFn` | Interface pour créer des validateurs personnalisés |
+| Validator cross-field | Posé sur un `FormGroup`, compare plusieurs champs |
+
+---
+
+## 26 - Démo 14 - Routing avancé
+
+Le **routing avancé** couvre la navigation programmatique, les **paramètres de route** (`:id`) et les **query parameters** (`?key=value`).
+
+> Docs : [https://angular.dev/guide/routing/router-reference](https://angular.dev/guide/routing/router-reference)
+
+### Générer le composant
+
+```bash
+ng g c features/demonstrations/demo14-advanced-routing --skip-tests
+```
+
+### Configuration de la route avec paramètre
+
+```typescript
+// demonstrations.routes.ts
+{
+  path: 'demo14',
+  loadComponent: () => import("./demo14-advanced-routing/demo14-advanced-routing")
+    .then(c => c.Demo14AdvancedRouting)
+},
+{
+  path: 'demo14/:id',   // :id est un paramètre de route dynamique
+  loadComponent: () => import("./demo14-advanced-routing/demo14-advanced-routing")
+    .then(c => c.Demo14AdvancedRouting)
+},
+```
+
+### Le composant (`demo14-advanced-routing.ts`)
+
+```typescript
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+@Component({ /* ... */ })
+export class Demo14AdvancedRouting implements OnInit {
+
+  // Router : navigue vers d'autres routes
+  private readonly _router: Router = inject(Router);
+
+  // ActivatedRoute : lit les informations de la route active
+  private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+
+  id!: number;
+  person!: { lastname: string, firstname: string };
+
+  ngOnInit(): void {
+    // Lire un paramètre de route (:id)
+    if (this._activatedRoute.snapshot.params["id"]) {
+      this.id = this._activatedRoute.snapshot.params["id"];
+    }
+
+    // Lire des query parameters (?lastname=...&firstname=...)
+    if (this._activatedRoute.snapshot.queryParams["lastname"]) {
+      const { lastname, firstname } = this._activatedRoute.snapshot.queryParams;
+      this.person = { lastname, firstname };
+    }
+  }
+
+  // Navigation simple (tableau de segments → /demonstrations/demo14/routage)
+  navigate() {
+    this._router.navigate(["demonstrations", "demo14", "routage"]);
+    // Équivalent : this._router.navigateByUrl("/demonstrations/demo14/routage");
+  }
+
+  // Navigation avec paramètre de route → /demonstrations/demo14/42
+  navigateWithParams() {
+    this._router.navigate(["demonstrations", "demo14", 42]);
+  }
+
+  // Navigation avec query parameters → /demonstrations/demo14?lastname=Geerts&firstname=Quentin
+  navigateWithQueryParams() {
+    this._router.navigate(["demonstrations", "demo14"], {
+      queryParams: { lastname: "Geerts", firstname: "Quentin", age: 29 }
+    });
+  }
+}
+```
+
+### Comparaison params vs queryParams
+
+| | Paramètre de route | Query Parameter |
+|--|-------------------|-----------------|
+| Syntaxe URL | `/demo14/42` | `/demo14?id=42` |
+| Déclaration route | `path: 'demo14/:id'` | `path: 'demo14'` |
+| Lecture | `snapshot.params["id"]` | `snapshot.queryParams["id"]` |
+| Obligatoire ? | Oui (fait partie de la route) | Non (optionnel) |
+| Usage typique | Identifiant d'une ressource | Filtres, tri, pagination |
+
+### Notions couvertes
+
+| Notion | Description |
+|--------|-------------|
+| `Router` | Service de navigation programmatique |
+| `router.navigate([...])` | Navigation par tableau de segments |
+| `router.navigateByUrl('/...')` | Navigation par URL complète |
+| `ActivatedRoute` | Informations sur la route actuellement active |
+| `snapshot.params` | Paramètres de route (`/:id`) |
+| `snapshot.queryParams` | Paramètres de requête (`?key=value`) |
+| `{ queryParams: {...} }` | Passer des query params lors de la navigation |
+
+---
+
+## 27 - Démo 15 - Les Guards
+
+Les **guards** protègent les routes. `canActivate` bloque l'accès si une condition n'est pas remplie, `canDeactivate` demande confirmation avant de quitter une page.
+
+> Docs : [https://angular.dev/guide/routing/common-router-tasks#preventing-unauthorized-access](https://angular.dev/guide/routing/common-router-tasks#preventing-unauthorized-access)
+
+### Générer les composants
+
+```bash
+ng g c features/demonstrations/demo15-guards --skip-tests
+ng g c features/demonstrations/demo15-guards/demo15-secret --skip-tests
+```
+
+### Guard canActivate (`core/guards/auth.guard.ts`)
+
+```typescript
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { FakeAuthenticationService } from '../services/fake-authentication.service';
+
+export const authGuard: CanActivateFn = (route, state) => {
+  // Retourne true → accès autorisé
+  // Retourne une redirection → accès refusé + redirection
+  return inject(FakeAuthenticationService).status()
+    ? true
+    : inject(Router).navigate(["demonstrations", "demo12"]);
+};
+```
+
+### Guard canDeactivate (`core/guards/confirm.guard.ts`)
+
+```typescript
+import { CanDeactivateFn } from '@angular/router';
+
+export const confirmGuard: CanDeactivateFn<unknown> = (component, currentRoute, currentState, nextState) => {
+  return confirm("Es-tu sûr de vouloir partir ?");
+};
+```
+
+### Configuration dans les routes
+
+```typescript
+// demonstrations.routes.ts
+{
+  path: 'demo15-secret',
+  canActivate:   [authGuard],      // Vérifie avant d'activer la route
+  canDeactivate: [confirmGuard],   // Vérifie avant de quitter la route
+  loadComponent: () => import("./demo15-guards/demo15-secret/demo15-secret")
+    .then(c => c.Demo15Secret)
+},
+```
+
+### Notions couvertes
+
+| Notion | Description |
+|--------|-------------|
+| `CanActivateFn` | Fonction guard pour protéger l'accès à une route |
+| `CanDeactivateFn` | Fonction guard pour protéger le départ d'une route |
+| `canActivate: [guard]` | Configure un guard d'accès sur une route |
+| `canDeactivate: [guard]` | Configure un guard de sortie sur une route |
+| Retour `true` | Accès / départ autorisé |
+| Retour `false` ou redirection | Accès / départ refusé |
+| `inject()` dans un guard | L'injection de dépendances fonctionne dans les fonctions |
+
+---
+
+## 28 - Démo 16 - Les Resolvers
+
+Un **resolver** permet de **précharger des données** avant qu'un composant ne soit activé. Ainsi, le composant reçoit ses données dès son initialisation, sans état de chargement intermédiaire.
+
+> Docs : [https://angular.dev/guide/routing/common-router-tasks#resolve-pre-fetching-component-data](https://angular.dev/guide/routing/common-router-tasks#resolve-pre-fetching-component-data)
+
+### Le resolver (`core/resolvers/user-resolver.ts`)
+
+```typescript
+import { ResolveFn } from '@angular/router';
+import { UserWithId } from '../../shared/models/user.model';
+
+export const userResolver: ResolveFn<UserWithId | null> = (route, state) => {
+
+  const users: UserWithId[] = [
+    { id: 1, email: 'quentin.geerts@bstorm.be', lastname: 'Geerts', firstname: 'Quentin' },
+    { id: 2, email: 'john.doe@scoobydoo.be',    lastname: 'Doe',    firstname: 'John' },
+  ];
+
+  const id = +route.params["id"];
+
+  if (!users.some(u => u.id === id)) return null;
+
+  return users.find(u => u.id === id)!;
+  // En pratique, on appellerait un service : inject(UserService).getById(id)
+};
+```
+
+### Configuration dans les routes
+
+```typescript
+// demonstrations.routes.ts
+{
+  path: 'demo16/:id',
+  resolve: {
+    data: userResolver   // Angular exécute le resolver AVANT d'activer le composant
+  },
+  loadComponent: () => import("./demo16-resolvers/demo16-resolvers")
+    .then(c => c.Demo16Resolvers)
+},
+```
+
+### Le composant (`demo16-resolvers.ts`)
+
+```typescript
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { UserWithId } from '../../../shared/models/user.model';
+
+@Component({ /* ... */ })
+export class Demo16Resolvers implements OnInit {
+
+  private readonly _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+
+  user!: UserWithId;
+
+  ngOnInit(): void {
+    // Les données résolues sont disponibles dans snapshot.data sous la clé configurée
+    this.user = this._activatedRoute.snapshot.data["data"];
+  }
+
+  navigateTo(userId: number) {
+    // La navigation vers une autre route (et donc un autre userId) relance le resolver
+    this._router.navigate(["demonstrations", "demo16", userId]);
+  }
+}
+```
+
+### Modèle mis à jour (`shared/models/user.model.ts`)
+
+```typescript
+export interface User {
+  email: string;
+  lastname: string;
+  firstname: string;
+}
+
+// Extend : hérite des propriétés de User et en ajoute
+export interface UserWithId extends User {
+  id: number;
+}
+
+export interface UserLogin {
+  email: string;
+  password: string;
+}
+
+export interface UserSignUp {
+  email: string;
+  password: string;
+  lastname?: string;
+  firstname?: string;
+}
+```
+
+### Notions couvertes
+
+| Notion | Description |
+|--------|-------------|
+| `ResolveFn<T>` | Type d'une fonction resolver |
+| `resolve: { clé: resolver }` | Configure le resolver dans la route |
+| `snapshot.data["clé"]` | Accès aux données résolues dans le composant |
+| `extends` (interface) | Héritage d'interface : `UserWithId extends User` |
+| Avantage du resolver | Le composant n'a pas besoin de gérer l'état "en cours de chargement" |
+
+---
+
+## 29 - Démo 17 - Les Observables (RxJS)
+
+Les **Observables** de la librairie **RxJS** sont le mécanisme de réactivité historique d'Angular. Ils représentent un flux de valeurs émises dans le temps.
+
+> Docs : [https://angular.dev/guide/signals/rxjs-interop](https://angular.dev/guide/signals/rxjs-interop)
+> RxJS : [https://rxjs.dev](https://rxjs.dev)
+
+### Service avec BehaviorSubject (`core/services/fake-auth.service.ts`)
+
+```typescript
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class FakeAuthService {
+
+  private _isConnected: boolean = false;
+
+  // BehaviorSubject : Observable spécial qui :
+  // 1. Retient sa dernière valeur
+  // 2. L'émet immédiatement à tout nouveau subscriber
+  authentication$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this._isConnected);
+
+  login() {
+    this._isConnected = true;
+    this.authentication$.next(this._isConnected);  // Émet la nouvelle valeur
+  }
+
+  logout() {
+    this._isConnected = false;
+    this.authentication$.next(this._isConnected);
+  }
+}
+```
+
+### Le composant (`demo17-observables.ts`)
+
+```typescript
+import { Component, inject, OnInit } from '@angular/core';
+import { FakeAuthService } from '../../../core/services/fake-auth.service';
+
+@Component({ /* ... */ })
+export class Demo17Observables implements OnInit {
+
+  private readonly _authService: FakeAuthService = inject(FakeAuthService);
+
+  isConnected!: boolean;
+
+  ngOnInit(): void {
+    // .subscribe() s'exécute à chaque fois qu'une nouvelle valeur est émise
+    this._authService.authentication$.subscribe({
+      next: (value: boolean) => {
+        this.isConnected = value;
+      }
+    });
+  }
+}
+```
+
+### Observables vs Signals
+
+| | Observable (RxJS) | Signal (Angular) |
+|--|-------------------|-----------------|
+| Paradigme | Flux asynchrone | Valeur réactive synchrone |
+| Lecture | `.subscribe({ next: v => ... })` | `monSignal()` |
+| Création | `new BehaviorSubject(val)` | `signal(val)` |
+| Émission | `.next(valeur)` | `.set(valeur)` |
+| Dans le template | `AsyncPipe` ou `subscribe` | `monSignal()` directement |
+| Unsubscribe requis ? | Oui (risque de fuite mémoire) | Non |
+| Opérateurs | `map`, `filter`, `mergeMap`... | `computed()`, `effect()` |
+| Usage typique HTTP | `HttpClient` retourne des Observables | `httpResource()` retourne des Signaux |
+
+### Convention de nommage
+
+Par convention, les variables Observable sont suffixées par `$` :
+
+```typescript
+authentication$: BehaviorSubject<boolean>;
+products$: Observable<Product[]>;
+```
+
+### Notions couvertes
+
+| Notion | Description |
+|--------|-------------|
+| `Observable<T>` | Flux de valeurs (0 à n) émises dans le temps |
+| `BehaviorSubject<T>` | Observable qui retient et réémet sa dernière valeur |
+| `.next(value)` | Émet une nouvelle valeur dans un Subject |
+| `.subscribe({ next })` | S'abonne pour réagir aux émissions |
+| Convention `$` | Suffixe pour les variables de type Observable |
+
+---
+
+## 30 - Exercice 08 - Gestion des produits avec service
+
+**Objectif** : Reprendre l'exercice 07 en déplaçant la logique de données dans un **service**. Le composant ne s'occupe que de l'affichage ; le service gère les données.
+
+### Générer le service et les composants
+
+```bash
+ng g service core/services/products --skip-tests
+ng g c features/exercices/exo08 --skip-tests
+ng g c features/exercices/exo08/exo08-list --skip-tests
+ng g c features/exercices/exo08/exo08-add --skip-tests
+```
+
+### Le service (`core/services/products.service.ts`)
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Product } from '../../shared/models/product.model';
+
+@Injectable({ providedIn: 'root' })
+export class ProductsService {
+
+  private _products: Product[] = [
+    { name: 'Pomme', price: 1.2 },
+    { name: 'Poire', price: 1.23 },
+  ];
+
+  getProducts(): Product[] {
+    return this._products;
+  }
+
+  addProduct(product: Product): void {
+    this._products.push(product);
+  }
+
+  removeProduct(index: number): void {
+    this._products.splice(index, 1);
+  }
+}
+```
+
+### Le composant parent (`exo08.ts`)
+
+```typescript
+import { Component, inject, OnInit } from '@angular/core';
+import { Exo08List } from "./exo08-list/exo08-list";
+import { Exo08Add } from "./exo08-add/exo08-add";
+import { Product } from '../../../shared/models/product.model';
+import { ProductsService } from '../../../core/services/products.service';
+
+@Component({
+  selector: 'app-exo08',
+  imports: [Exo08List, Exo08Add],
+  templateUrl: './exo08.html',
+  styleUrl: './exo08.css',
+})
+export class Exo08 implements OnInit {
+
+  private readonly _productsService: ProductsService = inject(ProductsService);
+  products: Product[] = [];
+
+  ngOnInit(): void {
+    // Chargement initial depuis le service
+    this.products = this._productsService.getProducts();
+  }
+
+  addToProducts(newProduct: Product) {
+    this._productsService.addProduct(newProduct);
+    this.products = this._productsService.getProducts(); // Mise à jour de la vue
+  }
+
+  removeToProducts(index: number) {
+    this._productsService.removeProduct(index);
+    this.products = this._productsService.getProducts();
+  }
+}
+```
+
+### Notions pratiquées
+
+- Séparation des responsabilités : **service** = données, **composant** = affichage
+- `ngOnInit` pour charger les données au démarrage
+- Communication parent ↔ enfants avec `input()` et `output()`
+- `output<number>()` pour transmettre un index de suppression
+
+---
+
+## 31 - Démo 18 - HttpClient
+
+**HttpClient** permet d'effectuer des requêtes HTTP vers une API. Il retourne des **Observables**.
+
+> Docs : [https://angular.dev/guide/http](https://angular.dev/guide/http)
+
+### Configurer HttpClient (`app.config.ts`)
+
+```typescript
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';  // ← Importer
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient()   // ← Activer HttpClient dans toute l'application
+  ]
+};
+```
+
+### Générer le service et les composants
+
+```bash
+ng g service core/services/product-httpclient --skip-tests
+ng g c features/demonstrations/demo18-httpclient --skip-tests
+ng g c features/demonstrations/demo18-httpclient/product-details --skip-tests
+ng g c features/demonstrations/demo18-httpclient/product-create --skip-tests
+```
+
+### Modèle étendu (`shared/models/product.model.ts`)
+
+```typescript
+export interface Product {
+  name: string;
+  price: number;
+}
+
+// DTO (Data Transfer Object) : représente ce que l'API retourne
+// L'API ajoute un 'id' que le client ne connaît pas à la création
+export interface ProductDTO extends Product {
+  id: string;
+}
+```
+
+### Le service (`core/services/product-httpclient.service.ts`)
+
+```typescript
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Product, ProductDTO } from '../../shared/models/product.model';
+
+@Injectable({ providedIn: 'root' })
+export class ProductHttpclientService {
+
+  private readonly _httpClient: HttpClient = inject(HttpClient);
+  private readonly base_url = "http://localhost:3000/products";
+
+  getAllProducts(): Observable<ProductDTO[]> {
+    return this._httpClient.get<ProductDTO[]>(this.base_url);
+  }
+
+  getProductById(id: string): Observable<ProductDTO> {
+    return this._httpClient.get<ProductDTO>(`${this.base_url}/${id}`);
+  }
+
+  createProduct(product: Product): Observable<void> {
+    return this._httpClient.post<void>(this.base_url, product);
+  }
+
+  deleteProduct(id: string): Observable<void> {
+    return this._httpClient.delete<void>(`${this.base_url}/${id}`);
+  }
+}
+```
+
+### Utilisation avec subscribe
+
+```typescript
+// Approche manuelle : subscribe + stockage dans une propriété
+this._productsService.getAllProducts().subscribe({
+  next: (value: ProductDTO[]) => { this.products = value; },
+  error: (err) => { console.error(err); }
+});
+```
+
+### Utilisation avec AsyncPipe (recommandé)
+
+L'`AsyncPipe` s'abonne à l'Observable dans le template et **se désabonne automatiquement** à la destruction du composant :
+
+```typescript
+// Dans le composant : stocker l'Observable, pas les données
+products$ = this._productsService.getAllProducts();
+```
+
+```html
+<!-- Dans le template : le pipe async gère le cycle de vie -->
+@for (product of products$ | async; track product.id) {
+  <tr>
+    <td>{{ product.name }}</td>
+    <td>{{ product.price | currency:'EUR':'symbol':'1.2-2':'fr-BE' }}</td>
+  </tr>
+}
+```
+
+### Chaîner des requêtes avec mergeMap
+
+```typescript
+import { mergeMap } from 'rxjs';
+
+// Supprimer un produit, puis recharger automatiquement la liste
+deleteProduct(id: string) {
+  this.products$ = this._productsService.deleteProduct(id).pipe(
+    mergeMap(() => this._productsService.getAllProducts())
+  );
+}
+```
+
+### Convertir un Observable en Signal avec toSignal()
+
+```typescript
+import { toSignal } from '@angular/core/rxjs-interop';
+
+// Convertit un Observable en Signal (utilisable sans subscribe ni AsyncPipe)
+product = toSignal(this._productService.getProductById(id));
+// product est maintenant un Signal<ProductDTO | undefined>
+```
+
+### Notions couvertes
+
+| Notion | Description |
+|--------|-------------|
+| `provideHttpClient()` | Active le client HTTP dans l'application |
+| `inject(HttpClient)` | Injecte le client HTTP |
+| `http.get<T>(url)` | Requête GET typée, retourne `Observable<T>` |
+| `http.post<T>(url, body)` | Requête POST |
+| `http.delete<T>(url)` | Requête DELETE |
+| `http.patch<T>(url, body)` | Requête PATCH (modification partielle) |
+| `AsyncPipe` | S'abonne/désabonne automatiquement dans le template |
+| `mergeMap` | Opérateur RxJS : exécute un Observable à partir d'un autre |
+| `toSignal()` | Convertit un Observable en Signal |
+| DTO | _Data Transfer Object_ : interface calquée sur la réponse de l'API |
+
+---
+
+## 32 - Démo 19 - HTTP avec Signaux (httpResource)
+
+**`httpResource()`** est l'approche **signal-based** pour les requêtes HTTP. Il fonctionne comme un `computed()` : il rejoue automatiquement la requête quand les signaux qu'il lit à l'intérieur de sa factory changent.
+
+> Docs : [https://angular.dev/guide/http/making-requests#using-resources](https://angular.dev/guide/http/making-requests#using-resources)
+
+### Générer le service et le composant
+
+```bash
+ng g service core/services/product-httpresource --skip-tests
+ng g c features/demonstrations/demo19-http-signal --skip-tests
+```
+
+### Modèles pour la pagination (`shared/models/product.model.ts`)
+
+```typescript
+export interface PaginatedResponse<T> {
+  first: number;       // Numéro de la première page
+  prev: number | null; // Page précédente (null si première page)
+  next: number | null; // Page suivante (null si dernière page)
+  last: number;        // Numéro de la dernière page
+  pages: number;       // Nombre total de pages
+  items: number;       // Nombre total d'éléments
+  data: T[];           // Les éléments de la page courante
+}
+
+export interface PaginationParams {
+  _page: number;
+  _per_page: number;
+  _sort?: keyof Product | `-${keyof Product}`;
+}
+```
+
+### Le service (`core/services/product-httpresource.service.ts`)
+
+```typescript
+import { HttpClient, HttpParams, HttpResourceRef, httpResource } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class ProductHttpresourceService {
+
+  private readonly http: HttpClient = inject(HttpClient);
+  private readonly base_url = "http://localhost:3000/products";
+
+  // httpResource : pour la LECTURE (GET), retourne un Signal
+  getAllProducts(): HttpResourceRef<ProductDTO[]> {
+    return httpResource<ProductDTO[]>(() => this.base_url, { defaultValue: [] });
+  }
+
+  // Avec paramètres dynamiques : la factory lit un signal → relance auto si signal change
+  getProductsWithParams(params: () => PaginationParams) {
+    return httpResource<PaginatedResponse<ProductDTO>>(() => {
+      const p = params();
+      const query = new HttpParams({
+        fromObject: { _page: String(p._page), _per_page: String(p._per_page) }
+      });
+      return { url: this.base_url, params: query };
+    });
+  }
+
+  // HttpClient classique : pour les MUTATIONS (POST, DELETE, PATCH)
+  deleteProduct(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.base_url}/${id}`);
+  }
+}
+```
+
+### Le composant (`demo19-http-signal.ts`)
+
+```typescript
+import { Component, computed, inject, signal } from '@angular/core';
+import { ProductHttpresourceService } from '../../../core/services/product-httpresource.service';
+
+@Component({ /* ... */ })
+export class Demo19HttpSignal {
+
+  page     = signal(1);
+  perPage  = signal(15);
+
+  private readonly productService = inject(ProductHttpresourceService);
+
+  // Signal contenant les paramètres → sa mise à jour déclenche httpResource
+  private readonly paginationParams = signal({
+    _page: this.page(), _per_page: this.perPage()
+  });
+
+  // httpResource lit paginationParams() → relance la requête si ce signal change
+  response = this.productService.getProductsWithParams(() => this.paginationParams());
+
+  // computed() extrait les données du signal de réponse
+  products = computed(() => this.response.value()?.data ?? []);
+
+  deleteProduct(id: string) {
+    // Mutation avec HttpClient classique, puis .reload() pour rafraîchir
+    this.productService.deleteProduct(id).subscribe({
+      next: () => this.response.reload()
+    });
+  }
+
+  loadPage(page: number) {
+    // Mettre à jour le signal de params → httpResource relance automatiquement
+    this.paginationParams.update(prev => ({ ...prev, _page: page }));
+    this.page.set(page);
+  }
+}
+```
+
+### httpResource vs HttpClient Observable
+
+| | `httpResource()` | `HttpClient` Observable |
+|--|-----------------|------------------------|
+| Type de retour | `HttpResourceRef<T>` (Signal) | `Observable<T>` |
+| Lecture dans template | `resource.value()` | `resource$ \| async` |
+| Réactivité | Automatique si signaux dans la factory changent | Manuel (subscribe) |
+| Rafraîchissement | `.reload()` | Nouveau subscribe |
+| Mutations (POST/DELETE) | Non adapté | Oui |
+| Pagination réactive | Simple (signal de params) | Plus complexe |
+
+### Notions couvertes
+
+| Notion | Description |
+|--------|-------------|
+| `httpResource(() => url)` | Crée une ressource HTTP réactive |
+| `HttpResourceRef<T>` | Type retourné par `httpResource()` |
+| `resource.value()` | Lit les données (Signal) |
+| `resource.reload()` | Force un rechargement de la requête |
+| Factory function | Fonction passée à `httpResource()`, lue comme un `computed()` |
+| `HttpParams` | Construit les query parameters |
+| `computed()` avec resource | Extrait et transforme les données d'une resource |
+
+---
+
+## 33 - Démo 20 - Storage (localStorage / sessionStorage)
+
+**localStorage** et **sessionStorage** permettent de persister des données côté client dans le navigateur. Ce demo introduit un `StorageService` générique qui encapsule ces APIs.
+
+> Docs Web : [https://developer.mozilla.org/fr/docs/Web/API/Window/localStorage](https://developer.mozilla.org/fr/docs/Web/API/Window/localStorage)
+
+### Générer le service et le composant
+
+```bash
+ng g service core/services/storage --skip-tests
+ng g c features/demonstrations/demo20-storage --skip-tests
+```
+
+### Le service (`core/services/storage.service.ts`)
+
+```typescript
+import { Injectable } from '@angular/core';
+
+@Injectable({ providedIn: 'root' })
+export class StorageService {
+
+  // localStorage : persiste entre toutes les sessions (onglets, fermetures du navigateur)
+
+  setLocal<T>(key: string, value: T): void {
+    localStorage.setItem(key, JSON.stringify(value));  // Sérialise l'objet en chaîne
+  }
+
+  getLocal<T>(key: string): T | null {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) as T : null;        // Désérialise et type
+  }
+
+  removeLocal(key: string): void { localStorage.removeItem(key); }
+  clearLocal(): void              { localStorage.clear(); }
+
+  // sessionStorage : limité à l'onglet et à la session courante
+
+  setSession<T>(key: string, value: T): void {
+    sessionStorage.setItem(key, JSON.stringify(value));
+  }
+
+  getSession<T>(key: string): T | null {
+    const data = sessionStorage.getItem(key);
+    return data ? JSON.parse(data) as T : null;
+  }
+
+  removeSession(key: string): void { sessionStorage.removeItem(key); }
+  clearSession(): void              { sessionStorage.clear(); }
+}
+```
+
+### Le composant (`demo20-storage.ts`)
+
+```typescript
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { StorageService } from '../../../core/services/storage.service';
+
+export interface Preferences {
+  theme: string;
+  language: string;
+}
+
+@Component({
+  selector: 'app-demo20-storage',
+  imports: [ReactiveFormsModule],
+  templateUrl: './demo20-storage.html',
+  styleUrl: './demo20-storage.css',
+})
+export class Demo20Storage implements OnInit {
+
+  private readonly storageService = inject(StorageService);
+  private readonly fb = inject(FormBuilder);
+
+  // Charge les préférences sauvegardées, ou des valeurs par défaut
+  preferences = signal(this.loadLocal());
+
+  preferencesForm = this.fb.group({
+    theme:    [this.preferences().theme],
+    language: [this.preferences().language]
+  });
+
+  ngOnInit(): void {
+    // Applique le thème sauvegardé dès l'ouverture du composant
+    document.documentElement.setAttribute('data-bs-theme', this.preferences().theme);
+  }
+
+  loadLocal(): Preferences {
+    // ?? : retourne la valeur de droite si la gauche est null/undefined
+    return this.storageService.getLocal<Preferences>('preferences')
+      ?? { theme: 'light', language: 'fr' };
+  }
+
+  apply() {
+    this.storageService.setLocal('preferences', this.preferencesForm.value);  // 1. Persister
+    this.preferences.set(this.preferencesForm.value as Preferences);          // 2. Signal
+    document.documentElement.setAttribute('data-bs-theme', this.preferences().theme); // 3. DOM
+  }
+
+  removePreferences() {
+    this.storageService.removeLocal('preferences');
+    const defaults: Preferences = { theme: 'light', language: 'fr' };
+    this.preferences.set(defaults);
+    this.preferencesForm.setValue(defaults);
+    document.documentElement.setAttribute('data-bs-theme', defaults.theme);
+  }
+}
+```
+
+### Comparaison localStorage vs sessionStorage
+
+| | `localStorage` | `sessionStorage` |
+|--|----------------|-----------------|
+| Durée | Illimitée (jusqu'à suppression) | Session courante (onglet) |
+| Portée | Tous les onglets du même domaine | Onglet actuel uniquement |
+| Survit à la fermeture | Oui | Non |
+| Usage typique | Préférences utilisateur, token | Compteurs, données temporaires |
+
+### Notions couvertes
+
+| Notion | Description |
+|--------|-------------|
+| `localStorage` / `sessionStorage` | APIs web natives de stockage côté client |
+| `JSON.stringify` / `JSON.parse` | Sérialisation nécessaire (le stockage ne gère que des chaînes) |
+| Générics dans un service | `getLocal<T>()` retourne le bon type TypeScript |
+| `??` (nullish coalescing) | Valeur par défaut si `null` ou `undefined` |
+| `document.documentElement` | Accès à la balise `<html>` pour les attributs globaux |
+
+---
+
+## 34 - Démo 21 - Intercepteur HTTP et Authentification JWT
+
+Un **intercepteur HTTP** intercepte toutes les requêtes sortantes pour les modifier (ex: ajouter un header d'authentification). Ce demo illustre un flux d'authentification complet avec **JWT** (JSON Web Token).
+
+> Docs : [https://angular.dev/guide/http/interceptors](https://angular.dev/guide/http/interceptors)
+
+### Installer jwt-decode
+
+```bash
+npm install jwt-decode
+```
+
+### Configurer l'intercepteur (`app.config.ts`)
+
+```typescript
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { tokenInterceptor } from './core/interceptors/token-interceptor';
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    provideHttpClient(
+      withInterceptors([tokenInterceptor])  // ← Active l'intercepteur
+    )
+  ]
+};
+```
+
+### L'intercepteur (`core/interceptors/token-interceptor.ts`)
+
+```typescript
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+
+export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
+
+  const token = inject(AuthService).connectedUser()?.token;
+
+  // Si pas de token : on laisse passer la requête telle quelle
+  if (!token) return next(req);
+
+  // Sinon : on clone la requête et on ajoute le header Authorization
+  const secured = req.clone({
+    setHeaders: { Authorization: `bearer ${token}` }
+  });
+
+  return next(secured);
+};
+```
+
+### Modèles JWT (`shared/models/jwt.model.ts`)
+
+```typescript
+export interface JwtPayload {
+  sub?: string;    // Subject (identifiant de l'utilisateur)
+  email?: string;
+  role?: string;
+  exp?: number;    // Expiration (timestamp Unix)
+  token: string;   // Le token JWT brut
+}
+
+export interface TokenInfo {
+  token: string;
+  expiration: Date | null;
+}
+```
+
+### Service d'authentification (`core/services/auth.service.ts`)
+
+```typescript
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { tap } from 'rxjs';
+import { UserLogin, UserSignUp } from '../../shared/models/user.model';
+import { JwtPayload, TokenInfo } from '../../shared/models/jwt.model';
+import { jwtDecode } from 'jwt-decode';
+import { StorageService } from './storage.service';
+import { environment } from '../../../environments/environment';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+
+  private readonly http    = inject(HttpClient);
+  private readonly storage = inject(StorageService);
+
+  // Persiste entre les rechargements grâce au localStorage
+  connectedUser = signal<JwtPayload | null>(
+    this.storage.getLocal<JwtPayload>("payload")
+  );
+
+  login(login: UserLogin) {
+    return this.http.post<TokenInfo>(`${environment.apiUrl}/api/auth/login`, login)
+      .pipe(
+        tap((token: TokenInfo) => this.decodeToken(token))
+      );
+  }
+
+  signup(signup: UserSignUp) {
+    return this.http.post<void>(`${environment.apiUrl}/api/auth/register`, signup);
+  }
+
+  private decodeToken(token: TokenInfo): void {
+    // Décode le JWT pour extraire les claims (email, rôle, exp...)
+    const claims = jwtDecode<JwtPayload>(token.token);
+    this.connectedUser.set({ token: token.token, ...claims });
+    this.storage.setLocal("payload", this.connectedUser());
+  }
+
+  logout() {
+    this.connectedUser.set(null);
+    this.storage.removeLocal("payload");
+  }
+}
+```
+
+### Fichier d'environnement (`src/environments/environment.ts`)
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:5000'  // URL de base de l'API
+};
+```
+
+### @ViewChild — accéder à un élément du template
+
+```typescript
+import { ViewChild, ElementRef } from '@angular/core';
+import { Modal } from 'bootstrap';
+
+export class Todolist {
+
+  // Référence vers un élément DOM identifié par #modalEl dans le template
+  @ViewChild('modalEl') modalEl!: ElementRef;
+
+  openModal() {
+    const modal = new Modal(this.modalEl.nativeElement);
+    modal.show();
+  }
+}
+```
+
+```html
+<!-- Template reference variable : #modalEl -->
+<div #modalEl class="modal fade">...</div>
+```
+
+### Architecture du demo 21
+
+```
+demo21-interceptor/
+├── demo21-interceptor.ts       ← Composant parent (orchestre connexion et todos)
+├── auth-login/                 ← Formulaire de connexion (reactive form)
+├── auth-signup/                ← Formulaire d'inscription (reactive form + passwordMatch)
+├── todolist/                   ← Liste des todos (requêtes authentifiées via intercepteur)
+└── todolist-add/               ← Formulaire d'ajout de todo
+```
+
+### Flux d'authentification JWT
+
+```
+1. Utilisateur soumet email + mot de passe
+2. POST /api/auth/login → serveur retourne un token JWT
+3. jwtDecode(token) → extrait les claims (email, rôle, exp)
+4. connectedUser signal mis à jour + persisté dans localStorage
+5. Pour toute requête suivante : l'intercepteur lit connectedUser().token
+   et l'injecte dans le header "Authorization: bearer <token>"
+6. L'API autorise la requête car elle reconnaît le token
+```
+
+### Notions couvertes
+
+| Notion | Description |
+|--------|-------------|
+| `HttpInterceptorFn` | Type d'un intercepteur fonctionnel |
+| `withInterceptors([...])` | Active les intercepteurs dans `provideHttpClient()` |
+| `req.clone({ setHeaders })` | Clone une requête en ajoutant des headers |
+| `next(req)` | Passe la requête au handler suivant (ou au serveur) |
+| JWT | Token d'authentification encodé (header.payload.signature) |
+| `jwtDecode<T>(token)` | Décode les claims d'un JWT sans vérification de signature |
+| `environment` | Variables d'environnement (URL d'API, feature flags...) |
+| `@ViewChild('ref')` | Référence vers un élément DOM ou composant enfant |
+| Template reference variable | `#nomRef` dans le template HTML |
+
+---
+
+## 35 - Exercice 09 - Formulaire réactif avec validateur d'âge
+
+**Objectif** : Créer un formulaire réactif avec un validateur personnalisé qui vérifie que l'utilisateur a l'âge minimum requis à partir d'une date de naissance.
+
+### Générer le composant
+
+```bash
+ng g c features/exercices/exo09 --skip-tests
+```
+
+### Le validateur (`shared/validators/age.validator.ts`)
+
+```typescript
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+
+export function ageValidator(minimum: number = 18): ValidatorFn {
+
+  return (control: AbstractControl): ValidationErrors | null => {
+
+    const now       = new Date();
+    const birthDate = new Date(control.value);
+
+    // Calcul de l'âge
+    let age = now.getFullYear() - birthDate.getFullYear();
+
+    // Correction : l'anniversaire n'est pas encore passé cette année
+    if (
+      now.getMonth() < birthDate.getMonth() ||
+      (now.getMonth() === birthDate.getMonth() && now.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    if (age < minimum) {
+      // Retourner un objet = INVALIDE (la clé est accessible via control.errors?.['age'])
+      return { age: `Vous êtes trop jeune. Âge minimum requis : ${minimum} ans.` };
+    }
+
+    return null;  // null = VALIDE
+  };
+}
+```
+
+### Le composant (`exo09.ts`)
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ageValidator } from '../../../shared/validators/age.validator';
+
+@Component({
+  selector: 'app-exo09',
+  imports: [ReactiveFormsModule],
+  templateUrl: './exo09.html',
+  styleUrl: './exo09.css',
+})
+export class Exo09 {
+
+  private readonly _fb: FormBuilder = inject(FormBuilder);
+
+  form: FormGroup = this._fb.group({
+    birthDate: [null, [
+      Validators.required,
+      ageValidator()     // ← Validateur personnalisé avec âge minimum de 18 ans (par défaut)
+      // ageValidator(21) // ← Ou avec un âge minimum personnalisé
+    ]]
+  });
+
+  onSubmit() {
+    if (this.form.invalid) return;
+    console.log("Formulaire valide :", this.form.value);
+  }
+}
+```
+
+### Le template (`exo09.html`)
+
+```html
+<h2>Exercice 09 - Validateur d'âge</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="birthDate">Date de naissance :</label>
+    <input
+      id="birthDate"
+      type="date"
+      formControlName="birthDate"
+      [class.is-invalid]="form.get('birthDate')?.invalid && form.get('birthDate')?.touched"
+    >
+
+    @if (form.get('birthDate')?.errors?.['required'] && form.get('birthDate')?.touched) {
+      <span class="text-danger">La date de naissance est requise.</span>
+    }
+    @if (form.get('birthDate')?.errors?.['age']) {
+      <span class="text-danger">{{ form.get('birthDate')?.errors?.['age'] }}</span>
+    }
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Valider</button>
+</form>
+```
+
+### Anatomie d'un ValidatorFn
+
+```
+ValidatorFn = (control: AbstractControl) => ValidationErrors | null
+```
+
+### Notions pratiquées
+
+| Notion | Description |
+|--------|-------------|
+| `ValidatorFn` | Type d'un validateur personnalisé |
+| `AbstractControl` | Type générique pour accéder à `.value` dans un validator |
+| `ValidationErrors` | Type `{ [key: string]: any }` pour les erreurs |
+| Validateur avec paramètre | `ageValidator(minimum: number = 18)` |
+| Calcul d'âge précis | Tenir compte du mois et du jour d'anniversaire |
+| `errors?.['clé']` | Accès sécurisé aux erreurs dans le template |
+
+---
+
+## 36 - Récapitulatif des notions
 
 ### Data Binding
 
@@ -2411,6 +3872,88 @@ export class Navbar {
 | `ngOnInit` | Après l'initialisation du composant |
 | `ngOnDestroy` | Avant la destruction du composant |
 
+### Formulaires Réactifs
+
+| Concept | Description |
+|---------|-------------|
+| `FormControl` | Champ individuel avec valeur et validateurs |
+| `FormGroup` | Groupe de contrôles (y compris imbriqués) |
+| `FormArray` | Liste dynamique de contrôles |
+| `FormBuilder` | Service de création de formulaires (`inject(FormBuilder)`) |
+| `[formGroup]` | Lie un FormGroup à un `<form>` |
+| `formControlName` | Lie un input à un contrôle par son nom |
+| `Validators` | Validateurs intégrés (`required`, `email`, `minLength`...) |
+| `ValidatorFn` | Type pour les validateurs personnalisés |
+
+### Routing avancé
+
+| Concept | Description |
+|---------|-------------|
+| `Router.navigate([...])` | Navigation programmatique par segments |
+| `Router.navigateByUrl('/...')` | Navigation par URL complète |
+| `ActivatedRoute` | Informations sur la route active |
+| `snapshot.params["id"]` | Paramètre de route (`:id`) |
+| `snapshot.queryParams["k"]` | Paramètre de requête (`?k=v`) |
+| `{ queryParams: {...} }` | Passer des query params à la navigation |
+
+### Guards et Resolvers
+
+| Concept | Description |
+|---------|-------------|
+| `CanActivateFn` | Protège l'accès à une route |
+| `CanDeactivateFn` | Protège le départ d'une route |
+| `canActivate: [guard]` | Configure un guard d'accès sur une route |
+| `canDeactivate: [guard]` | Configure un guard de sortie sur une route |
+| `ResolveFn<T>` | Précharge des données avant l'activation |
+| `resolve: { clé: fn }` | Configuration du resolver dans la route |
+| `snapshot.data["clé"]` | Accès aux données résolues |
+
+### RxJS et Observables
+
+| Concept | Description |
+|---------|-------------|
+| `Observable<T>` | Flux de valeurs émises dans le temps |
+| `BehaviorSubject<T>` | Observable qui retient et réémet sa dernière valeur |
+| `.next(value)` | Émet une nouvelle valeur dans un Subject |
+| `.subscribe({ next })` | S'abonne pour réagir aux émissions |
+| `AsyncPipe` | Gère le subscribe/unsubscribe automatiquement dans le template |
+| `mergeMap` | Opérateur : exécute un Observable à partir d'un autre |
+| `toSignal()` | Convertit un Observable en Signal |
+| Convention `$` | Suffixe pour les variables de type Observable |
+
+### HTTP
+
+| Concept | Description |
+|---------|-------------|
+| `provideHttpClient()` | Active HttpClient dans l'application |
+| `withInterceptors([...])` | Active les intercepteurs |
+| `http.get/post/delete/patch<T>()` | Méthodes HTTP typées |
+| `httpResource(() => url)` | Requête HTTP réactive (signal-based) |
+| `HttpResourceRef<T>.value()` | Lit les données d'une resource (Signal) |
+| `.reload()` | Rafraîchit une HttpResource |
+| DTO | _Data Transfer Object_ : interface calquée sur la réponse API |
+
+### Intercepteurs et Authentification JWT
+
+| Concept | Description |
+|---------|-------------|
+| `HttpInterceptorFn` | Type d'un intercepteur fonctionnel |
+| `req.clone({ setHeaders })` | Clone une requête en ajoutant des headers |
+| `next(req)` | Passe la requête au handler suivant |
+| JWT | Token d'authentification encodé (header.payload.signature) |
+| `jwtDecode<T>(token)` | Décode les claims d'un JWT |
+| `environment` | Variables d'environnement (URL d'API, feature flags) |
+| `@ViewChild('ref')` | Référence vers un élément DOM ou composant enfant |
+
+### Storage
+
+| Concept | Description |
+|---------|-------------|
+| `localStorage` | Persistant entre toutes les sessions |
+| `sessionStorage` | Limité à l'onglet/session courante |
+| `JSON.stringify/parse` | Sérialisation nécessaire pour le stockage |
+| `??` (nullish coalescing) | Valeur par défaut si `null` ou `undefined` |
+
 ### Commandes CLI utiles
 
 ```bash
@@ -2438,8 +3981,10 @@ ng build                       # Compiler pour la production
 - [Guide des Inputs](https://angular.dev/guide/components/inputs)
 - [Guide des Outputs](https://angular.dev/guide/components/outputs)
 - [Guide de l'injection de dépendances](https://angular.dev/guide/di)
+- [Guide des Formulaires Réactifs](https://angular.dev/guide/forms/reactive-forms)
+- [Guide HTTP](https://angular.dev/guide/http)
+- [Guide des Intercepteurs](https://angular.dev/guide/http/interceptors)
+- [Guide des Guards et Resolvers](https://angular.dev/guide/routing/common-router-tasks)
+- [Interopérabilité RxJS ↔ Signals](https://angular.dev/guide/signals/rxjs-interop)
 - [Guide des formulaires](https://angular.dev/guide/forms)
 - [Référence de la CLI Angular](https://angular.dev/tools/cli)
-
-
-
